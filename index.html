@@ -1,0 +1,2744 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AeroLexis">
+    <title>AeroLexis & Oxford Master | Genel & Havacılık İngilizcesi</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cockpit: {
+                            950: '#070B14',
+                            900: '#0F172A',
+                            800: '#1E293B',
+                            700: '#334155',
+                            accent: '#38BDF8',
+                            amber: '#F59E0B',
+                            emerald: '#10B981',
+                            danger: '#EF4444'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* iOS Safe Area & Native App Feel */
+        :root {
+            --sat: env(safe-area-inset-top, 0px);
+            --sab: env(safe-area-inset-bottom, 0px);
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+            overscroll-behavior-y: none;
+        }
+        input, textarea, select, .selectable-text {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 9999px;
+        }
+        /* 3D Flashcard Flip Animation */
+        .perspective-1000 {
+            perspective: 1200px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        /* Bottom Nav Safe Padding for iPhone Home Indicator */
+        .pb-safe {
+            padding-bottom: max(1rem, env(safe-area-inset-bottom));
+        }
+        .pt-safe {
+            padding-top: max(0.75rem, env(safe-area-inset-top));
+        }
+        /* Subtle pulse animation */
+        @keyframes pulseBorder {
+            0%, 100% { border-color: rgba(56, 189, 248, 0.4); }
+            50% { border-color: rgba(56, 189, 248, 0.9); }
+        }
+        .animate-pulse-border {
+            animation: pulseBorder 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-cockpit-950 text-slate-800 dark:text-slate-100 font-sans min-h-screen flex flex-col md:flex-row overflow-x-hidden transition-colors duration-200">
+
+    <!-- ==================== DESKTOP LEFT SIDEBAR ==================== -->
+    <aside class="hidden md:flex md:w-72 lg:w-80 flex-col bg-white dark:bg-cockpit-900 border-r border-slate-200 dark:border-slate-800 shrink-0 select-none z-30">
+        <!-- Brand Header -->
+        <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-sky-500/25">
+                    <i class="fa-solid fa-plane-up text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <h1 class="font-extrabold text-lg tracking-tight text-slate-900 dark:text-white">AeroLexis</h1>
+                        <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-500 dark:text-sky-400 font-bold border border-sky-500/30">PRO</span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Oxford & EASA Part-66 Sistemi</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats Pill -->
+        <div class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/40">
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="bg-white dark:bg-cockpit-800 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700/70">
+                    <div id="sideStatTotal" class="text-base font-extrabold text-sky-500 font-mono">0</div>
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Toplam</div>
+                </div>
+                <div class="bg-white dark:bg-cockpit-800 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700/70">
+                    <div id="sideStatMastered" class="text-base font-extrabold text-emerald-500 font-mono">0</div>
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Öğrenilen</div>
+                </div>
+                <div class="bg-white dark:bg-cockpit-800 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700/70">
+                    <div id="sideStatStreak" class="text-base font-extrabold text-amber-500 font-mono">0🔥</div>
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Seri</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Navigation Links -->
+        <nav class="flex-1 p-3 space-y-1.5 overflow-y-auto">
+            <div class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Ana Modüller</div>
+            
+            <button onclick="switchMainTab('study')" id="navBtn-study" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all">
+                <i class="fa-solid fa-layer-group w-5 text-center text-base"></i>
+                <span>Çalışma Merkezi (6 Mod)</span>
+            </button>
+
+            <button onclick="switchMainTab('nuance')" id="navBtn-nuance" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all">
+                <i class="fa-solid fa-scale-balanced w-5 text-center text-base"></i>
+                <span>Muadil & Nüans Rehberi</span>
+            </button>
+
+            <button onclick="switchMainTab('mywords')" id="navBtn-mywords" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all">
+                <i class="fa-solid fa-folder-plus w-5 text-center text-base"></i>
+                <div class="flex-1 flex items-center justify-between">
+                    <span>Kendi Kelimelerim</span>
+                    <span id="customCountBadge" class="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-500 font-mono">0</span>
+                </div>
+            </button>
+
+            <button onclick="switchMainTab('library')" id="navBtn-library" class="nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold transition-all">
+                <i class="fa-solid fa-book-bookmark w-5 text-center text-base"></i>
+                <span>Resmi Sözlük Paketleri</span>
+            </button>
+
+            <div class="pt-4 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Araçlar & Eşitleme</div>
+
+            <button onclick="openSyncModal()" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
+                <i class="fa-solid fa-cloud-arrow-up w-5 text-center text-sky-500"></i>
+                <span>Yedekle / Cihazlar Arası Aktar</span>
+            </button>
+
+            <button onclick="openGuideModal()" class="w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all">
+                <i class="fa-brands fa-apple w-5 text-center text-emerald-500"></i>
+                <span>Koder (iOS) & VS Code Rehberi</span>
+            </button>
+        </nav>
+
+        <!-- Bottom Theme & Voice Controls -->
+        <div class="p-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+            <div class="flex items-center justify-between bg-slate-100 dark:bg-cockpit-800 p-2 rounded-xl">
+                <span class="text-xs font-medium px-2 text-slate-600 dark:text-slate-300"><i class="fa-solid fa-volume-high mr-1.5 text-sky-500"></i>Telaffuz Aksanı</span>
+                <select id="voiceAccentSelect" onchange="changeAccent(this.value)" class="bg-white dark:bg-cockpit-900 text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 outline-none">
+                    <option value="en-US">🇺🇸 Amerikan (US)</option>
+                    <option value="en-GB">🇬🇧 İngiliz (UK)</option>
+                </select>
+            </div>
+            <button onclick="toggleTheme()" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-100 dark:bg-cockpit-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition-all">
+                <i id="themeIcon" class="fa-solid fa-sun text-amber-400"></i>
+                <span id="themeText">Açık / Koyu Tema Değiştir</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT AREA ==================== -->
+    <div class="flex-1 flex flex-col min-w-0 pb-24 md:pb-6">
+        
+        <!-- MOBILE TOP HEADER (iOS Navigation Bar Style) -->
+        <header class="md:hidden sticky top-0 z-30 bg-white/90 dark:bg-cockpit-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 pt-safe pb-3 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid fa-plane-up text-sm"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-extrabold text-base tracking-tight">AeroLexis</span>
+                        <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-400 font-bold">iOS</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-none">Genel & Bakım İngilizcesi</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+                <button onclick="openSyncModal()" title="Yedekle & Aktar" class="p-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 text-sky-500 active:scale-95 transition">
+                    <i class="fa-solid fa-rotate text-sm"></i>
+                </button>
+                <button onclick="openGuideModal()" title="Koder & VS Code Rehberi" class="p-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 text-emerald-500 active:scale-95 transition">
+                    <i class="fa-solid fa-circle-info text-sm"></i>
+                </button>
+                <button onclick="toggleTheme()" title="Tema" class="p-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 text-amber-400 active:scale-95 transition">
+                    <i class="fa-solid fa-circle-half-stroke text-sm"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- GLOBAL FILTER & ACTIVE DECK BAR -->
+        <div class="bg-white dark:bg-cockpit-900 border-b border-slate-200 dark:border-slate-800 px-4 lg:px-8 py-3 shadow-sm">
+            <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                
+                <div class="flex flex-wrap items-center gap-2 flex-1">
+                    <div class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400 mr-1">
+                        <i class="fa-solid fa-filter"></i>
+                        <span>Çalışma Havuzu:</span>
+                    </div>
+                    
+                    <!-- Category / Pack Selector -->
+                    <select id="globalCategoryFilter" onchange="applyGlobalFilter()" class="flex-1 sm:flex-initial bg-slate-100 dark:bg-cockpit-800 text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-semibold px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:border-sky-500 transition">
+                        <option value="ALL">📚 Tüm Kelimeler (Resmi + Kendi Eklediklerim)</option>
+                        <option value="OFFICIAL_ALL">🏛️ Sadece Resmi Sözlük Paketleri</option>
+                        <option value="CUSTOM_ALL">⭐ Sadece Kendi Eklediğim Kelimeler</option>
+                        <optgroup label="Resmi Konu Paketleri">
+                            <option value="EASA Part-66 & AMM">✈️ EASA Part-66 & AMM (Bakım/Onarım)</option>
+                            <option value="Oxford 3000/5000">🎓 Oxford 3000/5000 (Genel & Akademik)</option>
+                            <option value="Akademik Bağlaçlar & Phrasal Verbs">🔗 Akademik Bağlaçlar & Phrasal Verbs</option>
+                        </optgroup>
+                        <optgroup id="customListsOptgroup" label="Kendi Özel Listelerim">
+                            <!-- Dynamically populated -->
+                        </optgroup>
+                    </select>
+
+                    <!-- Status / SRS Filter -->
+                    <select id="globalStatusFilter" onchange="applyGlobalFilter()" class="bg-slate-100 dark:bg-cockpit-800 text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-semibold px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:border-sky-500 transition">
+                        <option value="ALL">Tüm Seviyeler</option>
+                        <option value="CRITICAL">🚨 Kritik Tekrar (Zor / Hatalı Yapılanlar)</option>
+                        <option value="UNLEARNED">⏳ Henüz Öğrenilmeyenler (Yeni/Orta)</option>
+                        <option value="MASTERED">✅ Öğrenilenler (Kolay İşaretlenenler)</option>
+                    </select>
+                </div>
+
+                <!-- Active Pool Counter & Quick Add Button -->
+                <div class="flex items-center justify-between sm:justify-end gap-2">
+                    <span id="activePoolBadge" class="text-xs font-mono font-bold px-3 py-1.5 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20">
+                        Aktif Havuz: 0 Kelime
+                    </span>
+                    <button onclick="openWordModal()" class="flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white shadow-md shadow-sky-500/20 active:scale-95 transition">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Kelime Ekle</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ==================== TAB 1: ÇALIŞMA MERKEZİ (6 STUDY MODES) ==================== -->
+        <main id="tabContent-study" class="tab-section flex-1 p-4 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
+            
+            <!-- 6 Study Method Selector Pills -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                <button onclick="switchStudyMode('flashcard')" id="modeBtn-flashcard" class="study-mode-btn flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition-all">
+                    <i class="fa-solid fa-clone text-lg mb-1"></i>
+                    <span class="text-xs font-bold">1. Kelime Kartları</span>
+                    <span class="text-[10px] opacity-75">EN↔TR Çift Yön</span>
+                </button>
+
+                <button onclick="switchStudyMode('quiz')" id="modeBtn-quiz" class="study-mode-btn flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition-all">
+                    <i class="fa-solid fa-list-check text-lg mb-1"></i>
+                    <span class="text-xs font-bold">2. Sınav Modu</span>
+                    <span class="text-[10px] opacity-75">Çoktan Seçmeli</span>
+                </button>
+
+                <button onclick="switchStudyMode('cloze')" id="modeBtn-cloze" class="study-mode-btn flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition-all">
+                    <i class="fa-solid fa-screwdriver-wrench text-lg mb-1"></i>
+                    <span class="text-xs font-bold">3. Bağlam & AMM</span>
+                    <span class="text-[10px] opacity-75">Cümle Tamamlama</span>
+                </button>
+
+                <button onclick="switchStudyMode('deepview')" id="modeBtn-deepview" class="study-mode-btn flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition-all">
+                    <i class="fa-solid fa-scale-balanced text-lg mb-1"></i>
+                    <span class="text-xs font-bold">4. Muadil & Analiz</span>
+                    <span class="text-[10px] opacity-75">Nüans & Kurallar</span>
+                </button>
+
+                <button onclick="switchStudyMode('dictation')" id="modeBtn-dictation" class="study-mode-btn flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition-all">
+                    <i class="fa-solid fa-keyboard text-lg mb-1"></i>
+                    <span class="text-xs font-bold">5. Yazma & Dikte</span>
+                    <span class="text-[10px] opacity-75">Dinle ve Yaz</span>
+                </button>
+
+                <button onclick="switchStudyMode('match')" id="modeBtn-match" class="study-mode-btn flex flex-col items-center justify-center p-3 rounded-2xl border text-center transition-all">
+                    <i class="fa-solid fa-bolt text-lg mb-1"></i>
+                    <span class="text-xs font-bold">6. Hızlı Eşleştir</span>
+                    <span class="text-[10px] opacity-75">Süreye Karşı</span>
+                </button>
+            </div>
+
+            <!-- ================= MODE 1: KELİME KARTLARI (FLASHCARDS) ================= -->
+            <section id="studyPanel-flashcard" class="study-panel space-y-5">
+                <!-- Controls Header -->
+                <div class="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-cockpit-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+                    <!-- Direction Toggle -->
+                    <div class="flex items-center gap-1.5 bg-slate-100 dark:bg-cockpit-800 p-1 rounded-xl">
+                        <button onclick="setCardDirection('EN_TR')" id="dirBtn-EN_TR" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-sky-500 text-white shadow">
+                            🇬🇧 İngilizce ➔ 🇹🇷 Türkçe
+                        </button>
+                        <button onclick="setCardDirection('TR_EN')" id="dirBtn-TR_EN" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-300">
+                            🇹🇷 Türkçe ➔ 🇬🇧 İngilizce
+                        </button>
+                    </div>
+
+                    <!-- Progress & Shuffle -->
+                    <div class="flex items-center gap-2">
+                        <span id="flashcardCounter" class="text-xs font-mono font-bold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 text-slate-600 dark:text-slate-300">
+                            1 / 1
+                        </span>
+                        <button onclick="shuffleActivePool()" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-shuffle text-sky-500"></i>
+                            <span>Karıştır</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3D Flip Card Container -->
+                <div class="max-w-2xl mx-auto">
+                    <div onclick="flipFlashcard()" class="perspective-1000 w-full h-[380px] sm:h-[410px] cursor-pointer select-none">
+                        <div id="flashcardInner" class="transform-style-3d relative w-full h-full">
+                            
+                            <!-- FRONT OF CARD -->
+                            <div class="backface-hidden absolute inset-0 bg-white dark:bg-cockpit-900 rounded-3xl border-2 border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-8 flex flex-col justify-between">
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span id="fcFrontCategory" class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-sky-500/15 text-sky-600 dark:text-sky-400 border border-sky-500/30">Kategori</span>
+                                        <span id="fcFrontPos" class="text-[11px] font-mono font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-cockpit-800 text-slate-600 dark:text-slate-300">Verb</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span id="fcFrontMastery" class="text-[11px] font-bold px-2.5 py-1 rounded-lg">Yeni</span>
+                                        <button onclick="event.stopPropagation(); speakCurrentWord()" class="w-10 h-10 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-500 flex items-center justify-center transition active:scale-90" title="Sesli Dinle">
+                                            <i class="fa-solid fa-volume-high text-base"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Center Prompt -->
+                                <div class="my-auto text-center space-y-3 px-2">
+                                    <div id="fcFrontDirectionLabel" class="text-[11px] font-mono uppercase tracking-widest text-slate-400">İNGİLİZCE TERİM</div>
+                                    <h2 id="fcFrontMainText" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white break-words">INSPECT</h2>
+                                    <p id="fcFrontSubHint" class="text-xs sm:text-sm font-mono text-sky-600 dark:text-sky-400 bg-sky-500/10 inline-block px-3 py-1 rounded-lg"></p>
+                                </div>
+
+                                <!-- Footer Tap Hint -->
+                                <div class="flex items-center justify-between text-xs text-slate-400 border-t border-slate-100 dark:border-slate-800/80 pt-3">
+                                    <span><i class="fa-regular fa-hand-pointer mr-1.5"></i>Kartı çevirmek için dokun veya <kbd class="px-1.5 py-0.5 text-[10px] bg-slate-100 dark:bg-cockpit-800 rounded">Boşluk</kbd></span>
+                                    <button onclick="event.stopPropagation(); openDeepModalForCurrent()" class="text-sky-500 hover:underline font-semibold flex items-center gap-1">
+                                        <span>Muadil Analizi</span>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- BACK OF CARD -->
+                            <div class="backface-hidden rotate-y-180 absolute inset-0 bg-gradient-to-br from-slate-900 via-cockpit-900 to-slate-950 text-white rounded-3xl border-2 border-sky-500/50 shadow-2xl p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
+                                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                                    <div>
+                                        <span id="fcBackWordTitle" class="text-lg font-extrabold text-sky-400 font-mono">INSPECT</span>
+                                        <span id="fcBackPos" class="text-xs text-slate-400 ml-2">(Verb)</span>
+                                    </div>
+                                    <button onclick="event.stopPropagation(); speakCurrentWord()" class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </button>
+                                </div>
+
+                                <div class="space-y-3 my-auto py-2">
+                                    <div>
+                                        <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400">KARŞILIĞI & ANLAMI</div>
+                                        <div id="fcBackMeaning" class="text-xl sm:text-2xl font-extrabold text-white mt-0.5">Muayene etmek, dikkatlice incelemek</div>
+                                    </div>
+
+                                    <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/80">
+                                        <div class="text-[10px] font-mono uppercase tracking-wider text-amber-400"><i class="fa-solid fa-code-branch mr-1"></i>GRAMER & EDAT KURALI</div>
+                                        <div id="fcBackGrammar" class="text-xs sm:text-sm font-mono text-amber-200 mt-0.5">inspect [something] FOR [damage / cracks]</div>
+                                    </div>
+
+                                    <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-800">
+                                        <div class="text-[10px] font-mono uppercase tracking-wider text-emerald-400"><i class="fa-solid fa-quote-left mr-1"></i>ÖRNEK CÜMLE (AMM / AKADEMİK)</div>
+                                        <p id="fcBackExample" class="text-xs sm:text-sm text-slate-200 italic mt-0.5"></p>
+                                        <p id="fcBackExampleTr" class="text-[11px] text-slate-400 mt-1"></p>
+                                    </div>
+
+                                    <div id="fcBackSynonymsBox" class="text-xs text-slate-300 flex items-start gap-2 pt-1">
+                                        <span class="text-sky-400 font-bold shrink-0"><i class="fa-solid fa-scale-balanced mr-1"></i>Muadiller:</span>
+                                        <span id="fcBackSynonyms" class="text-slate-300"></span>
+                                    </div>
+                                </div>
+
+                                <div class="text-[11px] text-slate-400 text-center border-t border-slate-800 pt-2">
+                                    Aşağıdaki butonlarla bu kelimedeki hakimiyetini işaretle
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Navigation & SRS Rating Buttons -->
+                    <div class="mt-5 grid grid-cols-5 gap-2 items-center">
+                        <button onclick="prevFlashcard()" class="col-span-1 py-3.5 rounded-2xl bg-white dark:bg-cockpit-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold text-sm transition active:scale-95">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+
+                        <button onclick="rateCurrentWord('hard')" class="col-span-1 py-3 rounded-2xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-600 dark:text-rose-400 border border-rose-500/30 font-bold text-xs flex flex-col items-center transition active:scale-95">
+                            <span>Zor</span>
+                            <span class="text-[10px] opacity-75 font-normal">Kritik Havuz</span>
+                        </button>
+
+                        <button onclick="rateCurrentWord('medium')" class="col-span-1 py-3 rounded-2xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-bold text-xs flex flex-col items-center transition active:scale-95">
+                            <span>Orta</span>
+                            <span class="text-[10px] opacity-75 font-normal">Tekrar Et</span>
+                        </button>
+
+                        <button onclick="rateCurrentWord('easy')" class="col-span-1 py-3 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold text-xs flex flex-col items-center transition active:scale-95">
+                            <span>Kolay</span>
+                            <span class="text-[10px] opacity-75 font-normal">Öğrenildi ✓</span>
+                        </button>
+
+                        <button onclick="nextFlashcard()" class="col-span-1 py-3.5 rounded-2xl bg-white dark:bg-cockpit-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 font-bold text-sm transition active:scale-95">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= MODE 2: SINAV MODU (MULTIPLE CHOICE QUIZ) ================= -->
+            <section id="studyPanel-quiz" class="study-panel hidden space-y-5">
+                <div class="max-w-2xl mx-auto space-y-4">
+                    <!-- Top Quiz Config Bar -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 bg-white dark:bg-cockpit-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center gap-1.5 bg-slate-100 dark:bg-cockpit-800 p-1 rounded-xl">
+                            <button onclick="setQuizDirection('EN_TR')" id="quizDir-EN_TR" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-500 text-white">EN ➔ TR</button>
+                            <button onclick="setQuizDirection('TR_EN')" id="quizDir-TR_EN" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300">TR ➔ EN</button>
+                            <button onclick="setQuizDirection('MIXED')" id="quizDir-MIXED" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300">Karışık Sınav</button>
+                        </div>
+
+                        <div class="flex items-center gap-3 text-xs font-mono font-bold">
+                            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-500">Doğru: <span id="quizCorrectCount">0</span></span>
+                            <span class="px-2.5 py-1 rounded-lg bg-rose-500/15 text-rose-500">Yanlış: <span id="quizWrongCount">0</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Question Card -->
+                    <div class="bg-white dark:bg-cockpit-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-lg space-y-6">
+                        <div class="flex items-center justify-between">
+                            <span id="quizCategoryBadge" class="text-xs font-bold px-3 py-1 rounded-lg bg-sky-500/15 text-sky-500">Kategori</span>
+                            <button onclick="speakQuizWord()" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-cockpit-800 text-sky-500 flex items-center justify-center">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+
+                        <div class="text-center space-y-2 py-2">
+                            <div id="quizPromptType" class="text-[11px] font-mono uppercase tracking-widest text-slate-400">BU KELİMENİN ANLAMI NEDİR?</div>
+                            <h3 id="quizQuestionText" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white"></h3>
+                            <p id="quizGrammarClue" class="text-xs font-mono text-amber-500"></p>
+                        </div>
+
+                        <!-- 4 Options Grid -->
+                        <div id="quizOptionsContainer" class="grid grid-cols-1 gap-3">
+                            <!-- Generated dynamically -->
+                        </div>
+
+                        <!-- Post-Answer Explanation Box -->
+                        <div id="quizFeedbackBox" class="hidden p-4 rounded-2xl border space-y-2">
+                            <div id="quizFeedbackTitle" class="font-extrabold text-sm"></div>
+                            <p id="quizFeedbackRule" class="text-xs font-mono text-amber-600 dark:text-amber-300"></p>
+                            <p id="quizFeedbackExample" class="text-xs italic text-slate-600 dark:text-slate-300"></p>
+                            <div class="pt-2 flex items-center justify-between">
+                                <button onclick="openDeepModalForQuizWord()" class="text-xs font-bold text-sky-500 hover:underline">
+                                    <i class="fa-solid fa-scale-balanced mr-1"></i>Muadil & Nüans Tablosunu Gör
+                                </button>
+                                <button onclick="generateQuizQuestion()" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs shadow-md transition">
+                                    Sonraki Soru <i class="fa-solid fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= MODE 3: BAĞLAM İÇİ BOŞLUK DOLDURMA (AMM / CLOZE TEST) ================= -->
+            <section id="studyPanel-cloze" class="study-panel hidden space-y-5">
+                <div class="max-w-2xl mx-auto bg-white dark:bg-cockpit-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-lg space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+                        <div>
+                            <span class="text-xs font-mono uppercase text-amber-500 font-bold"><i class="fa-solid fa-file-contract mr-1.5"></i>AMM & Akademik Bağlam Testi</span>
+                            <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">Cümledeki Boşluğa Uygun Terimi Seçin</h3>
+                        </div>
+                        <span id="clozeCategoryBadge" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-sky-500/15 text-sky-500">EASA AMM</span>
+                    </div>
+
+                    <!-- Blanked Sentence Display -->
+                    <div class="bg-slate-50 dark:bg-cockpit-950 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3">
+                        <p id="clozeSentenceEn" class="text-base sm:text-lg font-medium leading-relaxed text-slate-900 dark:text-white font-mono"></p>
+                        <div class="border-t border-slate-200 dark:border-slate-800 pt-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+                            <span id="clozeSentenceTr"><i class="fa-solid fa-language text-sky-500 mr-1"></i></span>
+                            <span id="clozeGrammarHint" class="font-mono text-amber-500 font-semibold"></span>
+                        </div>
+                    </div>
+
+                    <!-- Options for Cloze -->
+                    <div id="clozeOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+
+                    <!-- Cloze Feedback -->
+                    <div id="clozeFeedbackBox" class="hidden p-4 rounded-2xl border space-y-2">
+                        <div id="clozeFeedbackText" class="text-sm font-bold"></div>
+                        <p id="clozeFeedbackNuance" class="text-xs text-slate-600 dark:text-slate-300"></p>
+                        <div class="flex justify-end pt-1">
+                            <button onclick="generateClozeQuestion()" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs transition">
+                                Yeni Cümle <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= MODE 4 (INLINE): DERİNLEMESİNE MUADİL KARTI ================= -->
+            <section id="studyPanel-deepview" class="study-panel hidden space-y-5">
+                <div class="bg-gradient-to-r from-sky-500/10 via-indigo-500/10 to-transparent p-4 rounded-2xl border border-sky-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div>
+                        <h3 class="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
+                            <i class="fa-solid fa-scale-balanced text-sky-500 mr-1.5"></i>4. Yöntem: Muadil Kelimeler & Kullanım Kuralları (Nuance Matrix)
+                        </h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
+                            Kelimenin eş anlamlılarını, edat (preposition) kurallarını ve ASD-STE100 teknik İngilizce standartlarına göre hangi durumda hangisinin seçileceğini inceleyin.
+                        </p>
+                    </div>
+                    <button onclick="switchMainTab('nuance')" class="shrink-0 px-4 py-2 rounded-xl bg-sky-500 text-white text-xs font-bold shadow hover:bg-sky-400 transition">
+                        Tam Ekran Rehberi Aç <i class="fa-solid fa-expand ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Single Word Deep Inspector with Next/Prev -->
+                <div id="inlineDeepCardContainer" class="max-w-3xl mx-auto"></div>
+            </section>
+
+            <!-- ================= MODE 5: AKTİF YAZMA & DİKTE (SPELLING & AUDIO) ================= -->
+            <section id="studyPanel-dictation" class="study-panel hidden space-y-5">
+                <div class="max-w-xl mx-auto bg-white dark:bg-cockpit-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-lg space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono uppercase font-bold text-sky-500"><i class="fa-solid fa-headphones mr-1.5"></i>Yazma & Dikte Pratiği</span>
+                        <button onclick="giveDictationHint()" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-amber-500/15 text-amber-500 hover:bg-amber-500/25 transition">
+                            <i class="fa-regular fa-lightbulb mr-1"></i>Harf İpucu Al
+                        </button>
+                    </div>
+
+                    <div class="text-center space-y-3 py-2">
+                        <button onclick="speakDictationWord()" class="w-16 h-16 rounded-2xl bg-sky-500 hover:bg-sky-400 text-white shadow-lg shadow-sky-500/30 mx-auto flex items-center justify-center text-2xl active:scale-95 transition">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                        <p class="text-[11px] text-slate-400">Telaffuzu tekrar dinlemek için ikona dokun</p>
+                        <h3 id="dictationMeaningPrompt" class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white"></h3>
+                        <p id="dictationGrammarPrompt" class="text-xs font-mono text-amber-500"></p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <input type="text" id="dictationInput" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="İngilizce karşılığını buraya yazın..." onkeydown="if(event.key==='Enter') checkDictationAnswer()" class="w-full px-4 py-3.5 rounded-2xl bg-slate-100 dark:bg-cockpit-950 border-2 border-slate-200 dark:border-slate-700 focus:border-sky-500 outline-none text-center font-mono text-lg font-bold tracking-wider">
+                        
+                        <div class="flex gap-2">
+                            <button onclick="checkDictationAnswer()" class="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-sky-500/20 active:scale-98 transition">
+                                Kontrol Et <i class="fa-solid fa-check ml-1"></i>
+                            </button>
+                            <button onclick="generateDictationQuestion()" class="px-4 py-3.5 rounded-2xl bg-slate-100 dark:bg-cockpit-800 text-slate-600 dark:text-slate-300 font-bold text-sm">
+                                Geç <i class="fa-solid fa-forward"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="dictationFeedback" class="hidden p-4 rounded-2xl border text-center space-y-2"></div>
+                </div>
+            </section>
+
+            <!-- ================= MODE 6: HIZLI EŞLEŞTİRME (SPEED MATCH) ================= -->
+            <section id="studyPanel-match" class="study-panel hidden space-y-5">
+                <div class="max-w-3xl mx-auto space-y-4">
+                    <div class="flex items-center justify-between bg-white dark:bg-cockpit-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs sm:text-sm font-bold"><i class="fa-solid fa-stopwatch text-sky-500 mr-1.5"></i>Süre: <span id="matchTimer" class="font-mono text-sky-500">0.0s</span></span>
+                            <span class="text-xs sm:text-sm font-bold"><i class="fa-solid fa-check-double text-emerald-500 mr-1.5"></i>Eşleşen: <span id="matchPairsCount" class="font-mono text-emerald-500">0 / 6</span></span>
+                        </div>
+                        <button onclick="initMatchGame()" class="px-4 py-2 rounded-xl bg-sky-500 text-white text-xs font-bold shadow hover:bg-sky-400 transition">
+                            <i class="fa-solid fa-rotate-right mr-1"></i>Yeni Tur Başlat
+                        </button>
+                    </div>
+
+                    <div id="matchBoardGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- ==================== TAB 2: DERİNLEMESİNE ANALİZ & MUADİL REHBERİ (FULL TAB) ==================== -->
+        <section id="tabContent-nuance" class="tab-section hidden flex-1 p-4 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
+            <div class="bg-white dark:bg-cockpit-900 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-mono uppercase tracking-wider text-sky-500 font-bold">4. Yöntem • ASD-STE100 & Oxford Academic</span>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5">Muadil Kelimeler & Gramer Nüans Rehberi</h2>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+                            Benzer anlamlı kelimelerin (Örn: <em>Inspect / Check / Examine / Verify</em> veya <em>Mitigate / Alleviate</em>) hangi teknik ve akademik bağlamda kullanılacağını hatasız öğrenin.
+                        </p>
+                    </div>
+                    <!-- Search Bar -->
+                    <div class="relative w-full md:w-72">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="nuanceSearchInput" oninput="renderNuanceDirectory()" placeholder="Kelime, muadil veya kural ara..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-sm outline-none focus:border-sky-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nuance Cards List -->
+            <div id="nuanceDirectoryGrid" class="grid grid-cols-1 gap-5">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: KENDİ KELİMELERİM & ÖZEL KOLEKSİYONLAR ==================== -->
+        <section id="tabContent-mywords" class="tab-section hidden flex-1 p-4 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
+            
+            <!-- Header & Create Custom List / Add Word -->
+            <div class="bg-white dark:bg-cockpit-900 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div>
+                    <span class="text-xs font-mono uppercase tracking-wider text-amber-500 font-bold"><i class="fa-solid fa-star mr-1"></i>Kişisel Kelime Veritabanın</span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5">Kendi Kelimelerim ve Özel Çalışma Listelerim</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+                        Ders notlarından, EASA modüllerinden veya genel İngilizceden kendi kelimelerini, muadillerini ve kurallarını ekleyip tüm 6 modda çalışabilirsin.
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+                    <button onclick="openNewListModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold flex items-center gap-2 transition">
+                        <i class="fa-solid fa-folder-plus text-amber-500"></i>
+                        <span>Yeni Liste/Klasör Oluştur</span>
+                    </button>
+                    <button onclick="openWordModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white text-xs font-bold shadow-lg shadow-sky-500/20 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Yeni Kelime Ekle</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Custom Lists Horizontal Chips -->
+            <div id="customListsBar" class="flex items-center gap-2 overflow-x-auto pb-1">
+                <!-- Populated dynamically -->
+            </div>
+
+            <!-- Custom Words Table / Cards -->
+            <div id="myWordsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Populated dynamically -->
+            </div>
+
+        </section>
+
+        <!-- ==================== TAB 4: RESMİ SÖZLÜK VE MESLEKİ PAKETLER ==================== -->
+        <section id="tabContent-library" class="tab-section hidden flex-1 p-4 lg:p-8 max-w-6xl w-full mx-auto space-y-6">
+            <div class="bg-white dark:bg-cockpit-900 p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                <span class="text-xs font-mono uppercase tracking-wider text-emerald-500 font-bold"><i class="fa-solid fa-certificate mr-1"></i>Hazır Doğrulanmış Paketler</span>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-0.5">Resmi Sözlük ve Havacılık Paketleri</h2>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    Oxford 3000/5000 Akademik, EASA Part-66 & AMM Bakım Dokümantasyonu ve Teknik Bağlaç paketlerini inceleyin veya tek tıkla o paketi çalışmaya başlayın.
+                </p>
+            </div>
+
+            <!-- Pack Summary Cards -->
+            <div id="officialPacksGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Populated dynamically -->
+            </div>
+
+            <!-- All Official Words Search & List -->
+            <div class="bg-white dark:bg-cockpit-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <h3 class="font-bold text-base">Paketteki Kelimeler ve Hakimiyet Durumu</h3>
+                    <input type="text" id="librarySearchInput" oninput="renderLibraryWords()" placeholder="Paketlerde kelime ara..." class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm outline-none focus:border-sky-500">
+                </div>
+                <div id="libraryWordsList" class="divide-y divide-slate-200 dark:divide-slate-800"></div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ==================== MOBILE iOS BOTTOM TAB BAR ==================== -->
+    <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-cockpit-900/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 px-2 pb-safe pt-1.5 grid grid-cols-4 gap-1 select-none">
+        <button onclick="switchMainTab('study')" id="mobNav-study" class="mob-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl transition">
+            <i class="fa-solid fa-layer-group text-base mb-0.5"></i>
+            <span class="text-[10px] font-bold">Çalışma</span>
+        </button>
+
+        <button onclick="switchMainTab('nuance')" id="mobNav-nuance" class="mob-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl transition">
+            <i class="fa-solid fa-scale-balanced text-base mb-0.5"></i>
+            <span class="text-[10px] font-bold">Muadil/Kural</span>
+        </button>
+
+        <button onclick="switchMainTab('mywords')" id="mobNav-mywords" class="mob-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl transition relative">
+            <i class="fa-solid fa-folder-plus text-base mb-0.5"></i>
+            <span class="text-[10px] font-bold">Kelimelerim</span>
+        </button>
+
+        <button onclick="switchMainTab('library')" id="mobNav-library" class="mob-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl transition">
+            <i class="fa-solid fa-book-bookmark text-base mb-0.5"></i>
+            <span class="text-[10px] font-bold">Paketler</span>
+        </button>
+    </nav>
+
+    <!-- ==================== MODAL 1: ADD / EDIT WORD ==================== -->
+    <div id="wordModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-cockpit-900 w-full max-w-2xl rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0">
+                <div>
+                    <h3 id="wordModalTitle" class="font-extrabold text-lg text-slate-900 dark:text-white">Yeni Kelime / Terim Ekle</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Kendi listene detaylı veya hızlı kelime ekle</p>
+                </div>
+                <button onclick="closeWordModal()" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-cockpit-800 text-slate-500 hover:text-slate-800 dark:hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <form id="wordForm" onsubmit="saveWordForm(event)" class="p-6 overflow-y-auto space-y-4 flex-1">
+                <input type="hidden" id="formWordId">
+
+                <!-- Quick Smart Fill Bar -->
+                <div class="bg-sky-500/10 border border-sky-500/20 p-3 rounded-2xl flex flex-wrap items-center justify-between gap-2">
+                    <span class="text-xs text-sky-600 dark:text-sky-300 font-medium">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Örnek bir havacılık/akademik kelime şablonuyla alanları test etmek ister misin?
+                    </span>
+                    <button type="button" onclick="fillSampleWordTemplate()" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-sky-500 text-white hover:bg-sky-400 transition">
+                        Örnek Şablon Doldur
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">İngilizce Kelime / Terim *</label>
+                        <input type="text" id="formEn" required placeholder="Örn: Fraying, Fatigue, Mitigate..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-sm font-bold outline-none focus:border-sky-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">Türkçe Anlamı *</label>
+                        <input type="text" id="formTr" required placeholder="Örn: Saçaklanma, Metal yorgunluğu..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-sm font-bold outline-none focus:border-sky-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">Kelime Türü (Part of Speech)</label>
+                        <select id="formPos" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-sm outline-none focus:border-sky-500">
+                            <option value="Verb (Fiil)">Verb (Fiil)</option>
+                            <option value="Noun (İsim)">Noun (İsim)</option>
+                            <option value="Adjective (Sıfat)">Adjective (Sıfat)</option>
+                            <option value="Adverb (Zarf)">Adverb (Zarf)</option>
+                            <option value="Phrasal Verb">Phrasal Verb (Deyimsel Fiil)</option>
+                            <option value="Bağlaç / Kalıp">Bağlaç / Kalıp (Connector)</option>
+                            <option value="Havacılık Kısaltması">Havacılık Kısaltması (Abbr.)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">Liste / Klasör Seçimi</label>
+                        <select id="formCategory" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-sm outline-none focus:border-sky-500">
+                            <!-- Dynamically populated with custom lists + official categories -->
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">Gramer & Edat (Preposition) Kuralı</label>
+                    <input type="text" id="formGrammar" placeholder="Örn: inspect [part] FOR [cracks] / susceptible TO [corrosion]" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-sm font-mono outline-none focus:border-sky-500">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">İngilizce Örnek Cümle (AMM / Genel)</label>
+                        <textarea id="formExample" rows="2" placeholder="Örn: Replace the control cable if fraying exceeds limits." class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm outline-none focus:border-sky-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">Örnek Cümlenin Türkçe Çevirisi</label>
+                        <textarea id="formExampleTr" rows="2" placeholder="Örn: Saçaklanma limitleri aşarsa kontrol kablosunu değiştirin." class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm outline-none focus:border-sky-500"></textarea>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">Resmi / Teknik Kullanım Kuralı (ASD-STE100 & Akademik Not)</label>
+                    <input type="text" id="formUsageRule" placeholder="Örn: Çelik halatların tel tel kopması durumunda 'fraying' kullanılır." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm outline-none focus:border-sky-500">
+                </div>
+
+                <!-- Synonyms & Nuances Input -->
+                <div class="bg-slate-50 dark:bg-cockpit-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <label class="text-xs font-bold uppercase text-sky-500"><i class="fa-solid fa-scale-balanced mr-1"></i>Muadil Kelimeler ve Hangi Durumda Hangisi Uygun?</label>
+                        <button type="button" onclick="addSynonymFieldRow()" class="text-xs font-bold text-sky-500 hover:underline">+ Muadil Satırı Ekle</button>
+                    </div>
+                    <p class="text-[11px] text-slate-400">Her satıra bir muadil kelime ve hangi durumda tercih edildiğini yazabilirsin.</p>
+                    <div id="formSynonymsContainer" class="space-y-2">
+                        <!-- Dynamic rows -->
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeWordModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 font-bold text-xs">İptal</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold text-xs shadow-lg shadow-sky-500/25">
+                        <i class="fa-solid fa-floppy-disk mr-1.5"></i>Kelimeyi Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 2: DEEP NUANCE INSPECTOR MODAL ==================== -->
+    <div id="deepInspectModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-cockpit-900 w-full max-w-2xl rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-mono uppercase tracking-wider text-sky-500 font-bold"><i class="fa-solid fa-scale-balanced mr-1.5"></i>Derinlemesine Kelime & Muadil Analizi</span>
+                <button onclick="closeDeepInspectModal()" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-cockpit-800 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="deepInspectModalBody" class="p-6 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 3: NEW CUSTOM LIST MODAL ==================== -->
+    <div id="newListModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-cockpit-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-2xl">
+            <h3 class="font-extrabold text-lg">Yeni Özel Çalışma Listesi Oluştur</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Örn: "Modül 15 Gaz Türbinli Motorlar", "YDS Bağlaçlar", "Uçak Yapıları" gibi özel klasör oluşturabilirsin.</p>
+            <input type="text" id="newCustomListName" placeholder="Liste Adı Yazın..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-cockpit-800 border border-slate-200 dark:border-slate-700 text-sm font-bold outline-none focus:border-sky-500">
+            <div class="flex justify-end gap-2">
+                <button onclick="closeNewListModal()" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-cockpit-800 text-xs font-bold">Vazgeç</button>
+                <button onclick="createNewCustomList()" class="px-5 py-2 rounded-xl bg-sky-500 text-white text-xs font-bold">Oluştur</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 4: SYNC / BACKUP (KODER iOS <-> VS CODE PC) ==================== -->
+    <div id="syncModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-cockpit-900 w-full max-w-xl rounded-3xl border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-2xl my-auto">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                <div>
+                    <h3 class="font-extrabold text-lg">Veri Yedekleme & Cihazlar Arası Senkronizasyon</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Bilgisayarda (VS Code) eklediğin kelimeleri iPhone'a (Koder) veya tam tersine kolayca aktar.</p>
+                </div>
+                <button onclick="closeSyncModal()" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-cockpit-800 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="exportDataToClipboard()" class="flex-1 py-2.5 px-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs flex items-center justify-center gap-1.5">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>Veri Kodunu Panoya Kopyala</span>
+                    </button>
+                    <button onclick="downloadBackupJson()" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-xs flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-download"></i>
+                        <span>JSON Dosyası İndir</span>
+                    </button>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Yedek Kodu (JSON) — Buraya Yapıştırıp Yükleyebilirsin:</label>
+                    <textarea id="syncJsonTextarea" rows="5" class="w-full p-3 rounded-xl bg-slate-100 dark:bg-cockpit-950 border border-slate-200 dark:border-slate-700 font-mono text-xs outline-none focus:border-sky-500"></textarea>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+                    <button onclick="resetAllProgressConfirm()" class="px-3 py-2 rounded-xl bg-rose-500/15 text-rose-500 text-xs font-bold hover:bg-rose-500/25">
+                        <i class="fa-solid fa-trash-can mr-1"></i>Fabrika Ayarlarına Sıfırla
+                    </button>
+                    <button onclick="importDataFromTextarea()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs">
+                        <i class="fa-solid fa-file-import mr-1"></i>Yapıştırılan Veriyi Uygulamaya Yükle
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 5: KODER (iPHONE) & VS CODE SETUP GUIDE ==================== -->
+    <div id="guideModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-white dark:bg-cockpit-900 w-full max-w-2xl rounded-3xl border border-slate-200 dark:border-slate-800 p-6 space-y-4 shadow-2xl my-auto max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                <h3 class="font-extrabold text-lg"><i class="fa-brands fa-apple text-sky-500 mr-2"></i>iPhone (Koder) ve Bilgisayar (VS Code) Çalıştırma Rehberi</h3>
+                <button onclick="closeGuideModal()" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-cockpit-800 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs sm:text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                <div class="p-4 rounded-2xl bg-sky-500/10 border border-sky-500/20 space-y-2">
+                    <h4 class="font-extrabold text-sky-500 text-sm"><i class="fa-solid fa-mobile-screen-button mr-1.5"></i>1. iPhone'da "Koder" Uygulamasında Çalıştırma</h4>
+                    <ol class="list-decimal list-inside space-y-1.5">
+                        <li>App Store'dan ücretsiz <strong>Koder Code Editor</strong> uygulamasını indirip açın.</li>
+                        <li>Sol üstteki <strong>"+" (Yeni Dosya)</strong> butonuna dokunun ve dosya adını <code>index.html</code> yapın.</li>
+                        <li>Bu sayfadaki tüm kodu kopyalayıp <code>index.html</code> içine yapıştırın ve kaydedin.</li>
+                        <li>Sağ alt veya üstteki <strong>"Preview" (Göz / Dünya ikonu)</strong> butonuna bastığınızda uygulama tıpkı yerel bir iOS uygulaması gibi tam ekran çalışacaktır!</li>
+                        <li><strong>İpucu:</strong> Dilerseniz dosyayı iPhone'da <em>Dosyalar (Files)</em> uygulamasına kaydedip Safari ile açarak <strong>Paylaş ➔ Ana Ekrana Ekle</strong> diyerek telefonunuzun ana ekranına uygulama ikonu olarak da sabitleyebilirsiniz.</li>
+                    </ol>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 space-y-2">
+                    <h4 class="font-extrabold text-emerald-500 text-sm"><i class="fa-solid fa-laptop-code mr-1.5"></i>2. Bilgisayarda "Visual Studio Code" ile Çalıştırma</h4>
+                    <ol class="list-decimal list-inside space-y-1.5">
+                        <li>Bilgisayarınızda <strong>AeroLexis</strong> adında bir klasör açıp VS Code ile içine girin.</li>
+                        <li><code>index.html</code> adında bir dosya oluşturup bu kodun tamamını içine yapıştırın ve <code>Ctrl+S</code> (veya Mac'te <code>Cmd+S</code>) ile kaydedin.</li>
+                        <li>VS Code içindeki <strong>Live Server</strong> eklentisiyle ("Go Live") veya dosyaya çift tıklayarak doğrudan Chrome/Edge/Safari üzerinde açabilirsiniz.</li>
+                    </ol>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-1.5">
+                    <h4 class="font-extrabold text-amber-500 text-sm"><i class="fa-solid fa-rotate mr-1.5"></i>3. Bilgisayar ve iPhone Arasında Kelime Eşitleme</h4>
+                    <p>Eklediğiniz tüm kelimeler ve çalışma istatistikleriniz cihaz hafızasına (<code>localStorage</code>) otomatik kaydedilir. Bilgisayarda eklediğiniz yeni kelimeleri iPhone'a aktarmak için üstteki <strong>Yedekle / Aktar</strong> butonuna basıp JSON kodunu kopyalayarak iPhone'unuzda yapıştırmanız yeterlidir.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- ==================== APPLICATION JAVASCRIPT ==================== -->
+    <script>
+        /********************************************************************
+         * 1. BUILT-IN OFFICIAL VOCABULARY DATABASE (OXFORD & EASA PART-66)
+         ********************************************************************/
+        const INITIAL_OFFICIAL_WORDS = [
+            // --- EASA PART-66 & AMM (AIRCRAFT MAINTENANCE) ---
+            {
+                id: 'easa_1',
+                en: 'Inspect',
+                tr: 'Muayene etmek, dikkatlice incelemek',
+                pos: 'Verb (Fiil)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'inspect [component/area] FOR [cracks / corrosion / damage]',
+                example: 'Inspect the landing gear attachment fittings for cracks and corrosion.',
+                exampleTr: 'İniş takımı bağlantı parçalarını çatlak ve korozyon açısından muayene edin.',
+                usageRule: 'ASD-STE100 Kuralı: Fiziksel bir parçayı teknik standartlara ve bakım manueline (AMM) göre dikkatlice incelemek için daima "inspect" kullanılır. "for" edatı ile aranan hasar türü belirtilir.',
+                synonyms: [
+                    { word: 'Inspect', nuance: 'Bakım prosedürüne (AMM) göre detaylı fiziksel/görsel muayene yapmak. (Örn: Inspect the turbine blades for nicks.)' },
+                    { word: 'Check', nuance: 'Daha hızlı, basit ve rutin seviye/durum kontrolü yapmak. (Örn: Check the engine oil level on the sight glass.)' },
+                    { word: 'Examine', nuance: 'Genellikle laboratuvar, NDT veya kök neden analizinde derinlemesine/bilimsel incelemek. (Örn: Examine the fracture surface under a magnifying glass.)' },
+                    { word: 'Verify', nuance: 'Bir değerin, voltajın veya işlemin doğruluğunu teyit etmek/kanıtlamak. (Örn: Verify that the circuit breaker is open.)' }
+                ]
+            },
+            {
+                id: 'easa_2',
+                en: 'Chafing',
+                tr: 'Sürtünme aşınması (kablo, boru vb. birbirine sürtmesi)',
+                pos: 'Noun (İsim)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'chafing BETWEEN [wire bundle] AND [structure] / protect AGAINST chafing',
+                example: 'Ensure there is adequate clearance to prevent chafing between the hydraulic line and the wiring harness.',
+                exampleTr: 'Hidrolik hattı ile kablo demeti arasında sürtünme aşınmasını (chafing) önlemek için yeterli boşluk olduğundan emin olun.',
+                usageRule: 'Uçak bakımında titreşim nedeniyle kablo demetlerinin (wiring harness) veya hortumların gövde yapısına sürtünerek dış izolasyonunun aşınması için spesifik olarak "chafing" kullanılır.',
+                synonyms: [
+                    { word: 'Chafing', nuance: 'Kablo, hortum veya ince parçaların tekrarlı hafif sürtünmeyle dış yüzeyinin aşınması.' },
+                    { word: 'Fretting', nuance: 'Birbirine sıkıca bağlı iki metal yüzeyin mikroskobik titreşimle aşınması (Fretting corrosion).' },
+                    { word: 'Abrasion', nuance: 'Sert/pürüzlü bir cismin yüzeyi çizerek veya kazıyarak aşındırması.' },
+                    { word: 'Fraying', nuance: 'Çelik kontrol kablolarının (control cables) veya kumaş dokuların tel tel koparak saçaklanması.' }
+                ]
+            },
+            {
+                id: 'easa_3',
+                en: 'Clearance',
+                tr: 'Emniyet boşluğu, tolerans aralığı (iki parça arasındaki mesafe)',
+                pos: 'Noun (İsim)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'maintain a minimum clearance OF [X mm] BETWEEN [A] and [B]',
+                example: 'Measure the tip clearance between the fan blade tips and the shroud.',
+                exampleTr: 'Fan pal uçları ile karter (shroud) arasındaki uç boşluğunu (tip clearance) ölçün.',
+                usageRule: 'Hareketli veya sabit iki uçak parçası arasında birbirine çarpmaması/sürtmemesi için bırakılan kasıtlı ve ölçülen boşluktur.',
+                synonyms: [
+                    { word: 'Clearance', nuance: 'İki parça arasında teması önlemek için olması gereken emniyetli mesafe (Örn: Blade tip clearance).' },
+                    { word: 'Tolerance', nuance: 'Üretim veya bakımda izin verilen maksimum ve minimum ölçü sapma sınırı (Örn: Within permissible limits/tolerance).' },
+                    { word: 'Play / Backlash', nuance: 'Mekanik bağlantılarda veya dişlilerde oluşan boşluk/laçkalık (Örn: Free play in the rudder pedal).' },
+                    { word: 'Gap', nuance: 'Genel anlamda iki nesne arasındaki açıklık veya aralık.' }
+                ]
+            },
+            {
+                id: 'easa_4',
+                en: 'Actuate',
+                tr: 'Harekete geçirmek, mekanik/hidrolik olarak çalıştırmak',
+                pos: 'Verb (Fiil)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'actuate [the valve / flight control surface / switch]',
+                example: 'Hydraulic pressure is used to actuate the primary flight control surfaces.',
+                exampleTr: 'Birincil uçuş kontrol yüzeylerini harekete geçirmek (actuate) için hidrolik basınç kullanılır.',
+                usageRule: 'Teknik İngilizcede bir mekanizmayı, valfi veya kontrol yüzeyini fiziksel bir kuvvet/aktüatör ile hareket ettirmek için kullanılır.',
+                synonyms: [
+                    { word: 'Actuate', nuance: 'Mekanik, hidrolik veya elektrikli bir tertibatı fiziksel olarak harekete geçirmek.' },
+                    { word: 'Activate', nuance: 'Bir sistemi, alarmı veya yazılım modunu aktif/devreye sokmak (Örn: Activate the ELT).' },
+                    { word: 'Operate', nuance: 'Bir sistemi veya cihazı bütünsel olarak kullanmak/işletmek (Örn: Operate the cargo door).' },
+                    { word: 'Engage', nuance: 'Bir dişliyi, kavramayı veya otopilotu kilitleyerek devreye sokmak (Örn: Engage the autopilot).' }
+                ]
+            },
+            {
+                id: 'easa_5',
+                en: 'Discrepancy',
+                tr: 'Uygunsuzluk, arıza bulgusu, kayıt/ölçüm farkı',
+                pos: 'Noun (İsim)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'record / rectify any discrepancy IN [the technical logbook]',
+                example: 'All maintenance discrepancies must be recorded in the aircraft technical logbook.',
+                exampleTr: 'Tüm bakım uygunsuzlukları (bulgular/arızalar) uçak teknik kayıt defterine işlenmelidir.',
+                usageRule: 'Havacılıkta olması gereken standart durum ile uçakta tespit edilen gerçek durum arasındaki her türlü sapma, arıza veya bulguya resmi kayıtlarda "discrepancy" denir.',
+                synonyms: [
+                    { word: 'Discrepancy', nuance: 'Olması gereken standart ile mevcut durum arasındaki uygunsuzluk; teknik deftere (Tech Log) yazılan arıza bulgusu.' },
+                    { word: 'Defect', nuance: 'Malzeme veya parçadaki fiziksel kusur/hasar (Örn: Structural defect).' },
+                    { word: 'Fault', nuance: 'Özellikle elektrik/aviyonik sistemlerdeki hata veya arıza durumu (Örn: BITE fault code).' },
+                    { word: 'Flaw', nuance: 'Üretimden kaynaklanan iç yapısal kusur veya mikro çatlak (NDT muayenesinde aranır).' }
+                ]
+            },
+            {
+                id: 'easa_6',
+                en: 'Comply',
+                tr: 'Uymak, kurallara/direktiflere uygun hareket etmek',
+                pos: 'Verb (Fiil)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'comply WITH [Airworthiness Directive / AMM procedure]',
+                example: 'Operators must comply with the mandatory Airworthiness Directive (AD) within 500 flight hours.',
+                exampleTr: 'İşletmeciler, zorunlu Uçuşa Elverişlilik Direktifine (AD) 500 uçuş saati içinde uymalıdır.',
+                usageRule: 'Daima "WITH" edatı ile kullanılır (comply with). Yasal havacılık kurallarına (EASA, FAA, AD, SB) uyumu ifade eder.',
+                synonyms: [
+                    { word: 'Comply with', nuance: 'Yasal bir otoritenin (EASA/FAA) emirlerine, prosedürlerine veya direktiflerine eksiksiz uymak.' },
+                    { word: 'Conform to', nuance: 'Bir parçanın veya üretimin teknik tasarım standartlarına/ölçülerine uygun olması.' },
+                    { word: 'Adhere to', nuance: 'Güvenlik kurallarına ve çalışma prensiplerine sıkı sıkıya bağlı kalmak.' },
+                    { word: 'Obey', nuance: 'Günlük dilde bir kişinin emrine itaat etmek (Teknik dökümanlarda obey yerine comply with kullanılır).' }
+                ]
+            },
+            {
+                id: 'easa_7',
+                en: 'Torque',
+                tr: 'Tork, dönme momenti; belirli bir tork değerinde sıkmak',
+                pos: 'Noun (İsim)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'torque [the bolts] TO [specified value] / apply torque',
+                example: 'Torque the cylinder hold-down nuts to the value specified in the AMM.',
+                exampleTr: 'Silindir tespit somunlarını AMM\'de belirtilen tork değerinde sıkın.',
+                usageRule: 'ASD-STE100\'de hem isim ("uygulanan tork değeri") hem de fiil ("tork anahtarı ile belirli bir değere kadar sıkmak") olarak kullanılır.',
+                synonyms: [
+                    { word: 'Torque', nuance: 'Tork anahtarı (torque wrench) kullanarak kalibre edilmiş spesifik bir kuvvet değerinde sıkmak.' },
+                    { word: 'Tighten', nuance: 'Özel bir ölçü belirtmeksizin genel olarak vidayı/somunu sıkmak (Örn: Hand-tighten the filter).' },
+                    { word: 'Fasten', nuance: 'İki parçayı bağlantı elemanları (cıvata, perçin, kemer) ile birbirine tutturmak.' },
+                    { word: 'Secure', nuance: 'Parçayı emniyet teli (lockwire) veya kopilya (cotter pin) ile gevşemeyecek şekilde emniyete almak.' }
+                ]
+            },
+            {
+                id: 'easa_8',
+                en: 'Replenish',
+                tr: 'Eksilen sıvıyı/gazı tamamlamak, ikmal yapmak',
+                pos: 'Verb (Fiil)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'replenish [the hydraulic reservoir / oil tank] WITH [approved fluid]',
+                example: 'Replenish the hydraulic reservoir with Skydrol fluid until the level reaches the FULL mark.',
+                exampleTr: 'Hidrolik rezervuarını seviye FULL işaretine ulaşana kadar Skydrol sıvısı ile tamamlayın (ikmal yapın).',
+                usageRule: 'Uçak sistemlerinde (yağ, hidrolik, oksijen, nitrojen) azalan miktarı tekrar tam seviyesine getirmek için resmi bakım terimidir.',
+                synonyms: [
+                    { word: 'Replenish', nuance: 'Bakım prosedürlerinde eksilen sistem sıvısını/gazını standart seviyesine tamamlamak (en resmi AMM terimi).' },
+                    { word: 'Refill', nuance: 'Tamamen boşalmış bir tankı veya kabı yeniden doldurmak.' },
+                    { word: 'Top up', nuance: 'Az miktarda eksilmiş sıvıyı üst çizgiye kadar tamamlamak (Daha çok günlük bakım konuşmasında geçer).' }
+                ]
+            },
+            {
+                id: 'easa_9',
+                en: 'Delamination',
+                tr: 'Katman ayrılması (kompozit malzemelerde tabakaların birbirinden ayrılması)',
+                pos: 'Noun (İsim)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'inspect composite structure FOR delamination',
+                example: 'Ultrasonic testing revealed internal delamination in the carbon fiberhoneycomb panel.',
+                exampleTr: 'Ultrasonik test, karbon fiber petek panelde iç katman ayrılması (delamination) olduğunu ortaya çıkardı.',
+                usageRule: 'Kompozit uçak yapılarında (CFRP, GFRP) reçine matrisi ile kumaş katmanlarının (plies) darbe veya nem yüzünden birbirinden ayrılmasıdır.',
+                synonyms: [
+                    { word: 'Delamination', nuance: 'Kompozit veya lamine malzemelerin üst üste binmiş katmanlarının (layers/plies) birbirinden ayrılması.' },
+                    { word: 'Debonding / Disbond', nuance: 'Yapıştırılmış iki farklı yapının (örneğin dış kabuk ile iç petek/honeycomb çekirdeğin) yapışma yüzeyinden ayrılması.' },
+                    { word: 'Cracking', nuance: 'Metal veya sert malzemelerde oluşan kırılma/çatlama hattı.' }
+                ]
+            },
+            {
+                id: 'easa_10',
+                en: 'Deburr',
+                tr: 'Çapak almak (delme veya kesme sonrası metal kenardaki çapakları temizlemek)',
+                pos: 'Verb (Fiil)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'deburr [the drilled holes / sheet metal edges]',
+                example: 'After drilling the rivet holes, deburr the edges carefully to prevent stress concentration.',
+                exampleTr: 'Perçin deliklerini deldikten sonra, gerilme yığılmasını önlemek için kenarların çapağını dikkatlice alın.',
+                usageRule: 'Modül 6 ve 7 (Sac Metal İşlemleri): Delik delindikten sonra oluşan keskin metal kıymıklarını temizlemek için kullanılır.',
+                synonyms: [
+                    { word: 'Deburr', nuance: 'Metal kesimi veya delme işlemi sonrası oluşan keskin çapakları (burrs) temizleyip pürüzsüzleştirmek.' },
+                    { word: 'Countersink', nuance: 'Gömme başlı perçin veya cıvatanın (flush rivet) yüzeye sıfır oturması için delik ağzına konik havşa açmak.' },
+                    { word: 'Chamfer', nuance: 'Kalın bir metal parçanın 90 derecelik keskin dış kenarını açılı olarak kırmak (pah kırmak).' }
+                ]
+            },
+            {
+                id: 'easa_11',
+                en: 'Corrosion',
+                tr: 'Korozyon, kimyasal/elektrokimyasal metal aşınması',
+                pos: 'Noun (İsim)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'treat / remove corrosion FROM [aluminum skin]',
+                example: 'Intergranular corrosion spreads along the grain boundaries of aluminum alloys.',
+                exampleTr: 'Taneler arası korozyon, alüminyum alaşımlarının tane sınırları boyunca yayılır.',
+                usageRule: 'Havacılıkta tüm metalik bozulmaların genel adıdır. Sadece demir/çelik oksitlenmesine "rust" (pas) denir; alüminyum veya titanyum için asla "rust" denmez, "corrosion" denir.',
+                synonyms: [
+                    { word: 'Corrosion', nuance: 'Tüm metallerde (alüminyum, magnezyum, çelik, titanyum) elektrokimyasal reaksiyonla oluşan malzeme kaybı.' },
+                    { word: 'Rust', nuance: 'SADECE demir ve çelik (ferrous metals) alaşımlarının oksitlenmesi (pas). Alüminyum uçak gövdesi için kullanılmaz!' },
+                    { word: 'Pitting', nuance: 'Metal yüzeyinde küçük derin çukurcuklar/oyuklar şeklinde oluşan korozyon türü (Pitting corrosion).' }
+                ]
+            },
+            {
+                id: 'easa_12',
+                en: 'Fuselage',
+                tr: 'Uçak ana gövdesi (kanatlar ve kuyruk hariç yolcu/yük taşınan gövde)',
+                pos: 'Noun (İsim)',
+                category: 'EASA Part-66 & AMM',
+                isCustom: false,
+                grammar: 'semi-monocoque fuselage structure',
+                example: 'Frames, stringers, and bulkheads form the skeletal shape of the semi-monocoque fuselage.',
+                exampleTr: 'Çerçeveler (frames), boyuna destekler (stringers) ve bölmeler (bulkheads) yarı-monokok gövdenin iskelet şeklini oluşturur.',
+                usageRule: 'Uçağın kokpit, kabin ve kargo bölümünü barındıran orta ana tüp yapısına "fuselage" denir.',
+                synonyms: [
+                    { word: 'Fuselage', nuance: 'Uçağın kanat ve kuyruk hariç ana silindirik gövde yapısı.' },
+                    { word: 'Airframe', nuance: 'Motorlar (powerplant) ve aviyonikler hariç uçağın TÜM mekanik/yapısal iskeleti (Gövde + Kanatlar + Kuyruk + İniş Takımı).' },
+                    { word: 'Empennage', nuance: 'Uçağın kuyruk kısmı (yatay ve dikey stabilize, elevator ve rudder bütünü).' }
+                ]
+            },
+
+            // --- OXFORD 3000/5000 (GENERAL & ACADEMIC ENGLISH) ---
+            {
+                id: 'ox_1',
+                en: 'Mitigate',
+                tr: 'Azaltmak, hafifletmek (risk, hasar veya olumsuz etkiyi)',
+                pos: 'Verb (Fiil)',
+                category: 'Oxford 3000/5000',
+                isCustom: false,
+                grammar: 'mitigate [risk / hazard / environmental impact]',
+                example: 'Safety protocols are designed to mitigate the risks associated with human error in maintenance.',
+                exampleTr: 'Güvenlik protokolleri, bakımda insan hatasıyla ilişkili riskleri azaltmak (hafifletmek) için tasarlanmıştır.',
+                usageRule: 'Hem Oxford C1 akademik dilde hem de Havacılık Emniyet Yönetim Sistemlerinde (SMS - Safety Management System) "risk veya tehlikenin şiddetini azaltmak" anlamında standart kelimedir.',
+                synonyms: [
+                    { word: 'Mitigate', nuance: 'Bir riskin, tehlikenin veya cezanın ciddiyetini ve olumsuz sonuçlarını hafifletmek (Risk yönetiminde 1 numaralı kelimedir).' },
+                    { word: 'Alleviate', nuance: 'Fiziksel bir ağrıyı, acıyı veya ekonomik bir sıkıntıyı geçici/kalıcı olarak rahatlatmak (Örn: Alleviate pain/poverty).' },
+                    { word: 'Reduce', nuance: 'Sayı, miktar, boyut veya hızı genel olarak düşürmek (Örn: Reduce fuel consumption).' },
+                    { word: 'Diminish', nuance: 'Bir şeyin öneminin, gücünün veya değerinin zamanla azalması.' }
+                ]
+            },
+            {
+                id: 'ox_2',
+                en: 'Deteriorate',
+                tr: 'Kötüleşmek, bozulmak, kalitesi/durumu gerilemek',
+                pos: 'Verb (Fiil)',
+                category: 'Oxford 3000/5000',
+                isCustom: false,
+                grammar: 'deteriorate OVER [time] / weather conditions deteriorated',
+                example: 'Rubber seals tend to deteriorate rapidly when exposed to synthetic hydraulic fluids.',
+                exampleTr: 'Kauçuk contalar sentetik hidrolik sıvılarına maruz kaldığında hızla bozulma (kötüleşme) eğilimindedir.',
+                usageRule: 'Hava durumunun, hastanın sağlığının veya bir malzemenin fiziksel durumunun zamanla daha kötüye gitmesini anlatır.',
+                synonyms: [
+                    { word: 'Deteriorate', nuance: 'Fiziksel durumun, malzemenin veya hava şartlarının zamanla bozulup kötüleşmesi.' },
+                    { word: 'Degrade', nuance: 'Performansın, sinyal kalitesinin veya kimyasal yapının seviyesinin düşmesi (Örn: Thermal degradation of oil).' },
+                    { word: 'Worsen', nuance: 'Herhangi bir kötü durumun daha da kötü hale gelmesi (Günlük ve genel İngilizce).' },
+                    { word: 'Decay', nuance: 'Organik maddelerin çürümesi veya radyoaktif maddelerin bozunması.' }
+                ]
+            },
+            {
+                id: 'ox_3',
+                en: 'Subsequent',
+                tr: 'Daha sonraki, akabinde gelen, müteakip',
+                pos: 'Adjective (Sıfat)',
+                category: 'Oxford 3000/5000',
+                isCustom: false,
+                grammar: 'subsequent TO [event] / in subsequent flights',
+                example: 'The initial test flight was successful, and subsequent flights confirmed the aircraft’s stability.',
+                exampleTr: 'İlk test uçuşu başarılıydı ve daha sonraki (müteakip) uçuşlar uçağın kararlılığını doğruladı.',
+                usageRule: 'Bir olaydan sonra meydana gelen diğer olayları resmi ve akademik bir dille ifade eder.',
+                synonyms: [
+                    { word: 'Subsequent', nuance: 'Belirli bir olaydan sonra gerçekleşen (arada boşluk olabilir, kesintisiz sıra şart değildir).' },
+                    { word: 'Consecutive', nuance: 'Hiç ara vermeden peş peşe, ardışık gelen (Örn: Three consecutive days - Üç gün üst üste).' },
+                    { word: 'Successive', nuance: 'Birbirini düzenli bir zincir halinde takip eden (Örn: Successive generations of aircraft).' }
+                ]
+            },
+            {
+                id: 'ox_4',
+                en: 'Ambiguous',
+                tr: 'Belirsiz, iki anlamlı, yoruma açık (net olmayan)',
+                pos: 'Adjective (Sıfat)',
+                category: 'Oxford 3000/5000',
+                isCustom: false,
+                grammar: 'ambiguous [statement / instruction / wording]',
+                example: 'Simplified Technical English (STE) eliminates ambiguous sentences from maintenance manuals.',
+                exampleTr: 'Basitleştirilmiş Teknik İngilizce (STE), bakım manuellerinden iki anlamlı (belirsiz) cümleleri ortadan kaldırır.',
+                usageRule: 'Bir ifadenin birden fazla şekilde yorumlanabilmesi ve kafa karışıklığı yaratması durumudur.',
+                synonyms: [
+                    { word: 'Ambiguous', nuance: 'Birden fazla anlama gelebilen, hangi anlamın kastedildiği net olmayan ifade.' },
+                    { word: 'Vague', nuance: 'Detayları verilmemiş, üstü kapalı ve bulanık ifade veya hatıra (Örn: A vague description).' },
+                    { word: 'Obscure', nuance: 'Az bilinen, anlaşılması güç veya gizli kalmış (Örn: An obscure technical regulation).' }
+                ]
+            },
+            {
+                id: 'ox_5',
+                en: 'Obsolete',
+                tr: 'Modası geçmiş, kullanımdan kalkmış, tedavülden kalkmış',
+                pos: 'Adjective (Sıfat)',
+                category: 'Oxford 3000/5000',
+                isCustom: false,
+                grammar: 'become / render [something] obsolete',
+                example: 'Modern glass cockpits have made many analog flight instruments obsolete.',
+                exampleTr: 'Modern cam kokpitler, pek çok analog uçuş göstergesini kullanımdan kalkmış (eskimiş) hale getirdi.',
+                usageRule: 'Daha yeni ve üstün bir teknoloji çıktığı için artık üretilmeyen veya kullanılmayan parça/sistemler için kullanılır.',
+                synonyms: [
+                    { word: 'Obsolete', nuance: 'Daha iyisi çıktığı için artık tamamen kullanım dışı kalmış teknoloji veya parça.' },
+                    { word: 'Outdated', nuance: 'Güncelliğini yitirmiş, eski kalmış (Örn: Outdated manual revision - Güncel olmayan manuel revizyonu).' },
+                    { word: 'Redundant', nuance: '1) Gereksiz/fazlalık olan. 2) Mühendislikte: Emniyet için yedekli tasarlanmış sistem (Redundant hydraulic system).' }
+                ]
+            },
+            {
+                id: 'ox_6',
+                en: 'Crucial',
+                tr: 'Çok önemli, kritik, hayati belirleyiciliği olan',
+                pos: 'Adjective (Sıfat)',
+                category: 'Oxford 3000/5000',
+                isCustom: false,
+                grammar: 'crucial FOR / TO [flight safety / success]',
+                example: 'Proper weight and balance calculation is crucial for flight safety.',
+                exampleTr: 'Doğru ağırlık ve denge hesaplaması uçuş emniyeti için hayati önem taşır.',
+                usageRule: 'Bir sürecin başarısını veya emniyetini doğrudan belirleyen kilit noktalar için kullanılır.',
+                synonyms: [
+                    { word: 'Crucial', nuance: 'Bir sonucun başarılı veya başarısız olmasını doğrudan belirleyen kilit önemde.' },
+                    { word: 'Vital', nuance: 'Yaşamın veya sistemin devamlılığı için vazgeçilmez, hayati (Örn: Vital flight data).' },
+                    { word: 'Essential', nuance: 'Temel gereklilik olan, olmazsa olmaz (Örn: Essential bus bar / Essential equipment).' }
+                ]
+            },
+
+            // --- AKADEMİK BAĞLAÇLAR & PHRASAL VERBS ---
+            {
+                id: 'ph_1',
+                en: 'In accordance with',
+                tr: '...-e uygun olarak, ... uyarınca, ... doğrultusunda',
+                pos: 'Bağlaç / Kalıp',
+                category: 'Akademik Bağlaçlar & Phrasal Verbs',
+                isCustom: false,
+                grammar: 'in accordance with [AMM Chapter X / regulations] (Kısaltması: IAW)',
+                example: 'Install the replacement actuator in accordance with AMM Task 27-11-00.',
+                exampleTr: 'Yedek aktüatörü AMM Görev 27-11-00\'a uygun olarak (uyarınca) takın.',
+                usageRule: 'Havacılık bakım kayıtlarında en sık kullanılan kalıptır ve bakım kartlarında genellikle "IAW" olarak kısaltılır.',
+                synonyms: [
+                    { word: 'In accordance with (IAW)', nuance: 'Resmi bir kurala, yasaya veya bakım manueli prosedürüne birebir uygun olarak.' },
+                    { word: 'According to', nuance: 'Bir bilgi kaynağına veya kişiye göre (Örn: According to the pilot’s report...).' },
+                    { word: 'In compliance with', nuance: 'Yasal zorunluluklara ve denetim standartlarına tam uyum içinde.' }
+                ]
+            },
+            {
+                id: 'ph_2',
+                en: 'Susceptible to',
+                tr: '...-e karşı hassas, yatkın, kolay etkilenir / maruz kalabilir',
+                pos: 'Adjective (Sıfat)',
+                category: 'Akademik Bağlaçlar & Phrasal Verbs',
+                isCustom: false,
+                grammar: 'be susceptible TO [corrosion / fatigue / interference]',
+                example: 'High-strength steel alloys are highly susceptible to stress corrosion cracking.',
+                exampleTr: 'Yüksek mukavemetli çelik alaşımları, gerilimli korozyon çatlamasına karşı oldukça hassastır (yatkındır).',
+                usageRule: 'Malzemelerin çevresel etkilere (nem, korozyon, elektromanyetik girişim) karşı savunmasız/yatkın olduğunu anlatır.',
+                synonyms: [
+                    { word: 'Susceptible to', nuance: 'Teknik/bilimsel bağlamda bir malzemenin veya sistemin dış etkiye (korozyon, hastalık, EMI) kolayca kapılması.' },
+                    { word: 'Prone to', nuance: 'İstenmeyen bir hatayı veya arızayı tekrarlama eğiliminde olan (Örn: Prone to overheating).' },
+                    { word: 'Vulnerable to', nuance: 'Saldırıya veya fiziksel hasara karşı korumasız/açık olan (Örn: Vulnerable to foreign object damage).' }
+                ]
+            },
+            {
+                id: 'ph_3',
+                en: 'Prior to',
+                tr: '...-den önce (resmi ve teknik İngilizce)',
+                pos: 'Bağlaç / Kalıp',
+                category: 'Akademik Bağlaçlar & Phrasal Verbs',
+                isCustom: false,
+                grammar: 'prior TO [+ Noun / V-ing]',
+                example: 'Depressurize the hydraulic system prior to disconnecting any fluid lines.',
+                exampleTr: 'Herhangi bir sıvı hattını sökmeden önce hidrolik sistemin basıncını boşaltın.',
+                usageRule: 'Kendinden sonra İSİM veya "-ing" almış fiil (gerund) alır. Prosedür sıralamalarında "before" yerine tercih edilen resmi kalıptır.',
+                synonyms: [
+                    { word: 'Prior to', nuance: 'Resmi prosedürlerde ve akademik metinlerde "...-den önce" (Örn: Prior to engine start).' },
+                    { word: 'Before', nuance: 'Hem günlük hem teknik İngilizcede kullanılan standart "...-den önce" (ASD-STE100 içinde de çok yaygındır).' },
+                    { word: 'Preceding', nuance: 'Zaman veya sıra bakımından hemen bir önce gelen (Örn: In the preceding chapter).' }
+                ]
+            },
+            {
+                id: 'ph_4',
+                en: 'Carry out',
+                tr: 'Yürütmek, gerçekleştirmek, uygulamak (test, bakım, inceleme)',
+                pos: 'Phrasal Verb',
+                category: 'Akademik Bağlaçlar & Phrasal Verbs',
+                isCustom: false,
+                grammar: 'carry out [an inspection / operational test / repair]',
+                example: 'The technician must carry out a leak test after replacing the fuel pump.',
+                exampleTr: 'Teknisyen yakıt pompasını değiştirdikten sonra bir sızıntı testi gerçekleştirmelidir.',
+                usageRule: 'Planlı bir testi, denetimi veya görevi baştan sona uygulamak anlamında EASA sorularında çok sık geçer.',
+                synonyms: [
+                    { word: 'Carry out', nuance: 'Planlanmış bir görevi, bakımı veya testi pratikte uygulamak.' },
+                    { word: 'Perform', nuance: 'Bir işlemi veya fonksiyonu yerine getirmek (AMM\'de "Perform a BITE test" şeklinde çok kullanılır).' },
+                    { word: 'Conduct', nuance: 'Daha kapsamlı bir araştırmayı, denetimi veya soruşturmayı yönetmek/yürütmek (Örn: Conduct an accident investigation).' }
+                ]
+            },
+            {
+                id: 'ph_5',
+                en: 'Withstand',
+                tr: 'Dayanmak, direnmek, mukavemet göstermek (basınç, sıcaklık, kuvvete)',
+                pos: 'Verb (Fiil)',
+                category: 'Akademik Bağlaçlar & Phrasal Verbs',
+                isCustom: false,
+                grammar: 'withstand [high temperatures / extreme loads / pressure]',
+                example: 'Turbine blades are manufactured from nickel superalloys to withstand extreme temperatures.',
+                exampleTr: 'Türbin palleri aşırı sıcaklıklara dayanmak (mukavemet göstermek) için nikel süper alaşımlardan üretilir.',
+                usageRule: 'Malzeme bilgisi (Modül 6) ve motorlarda (Modül 15) parçaların yüksek basınç, yük ve ısıya bozulmadan dayanmasını ifade eder.',
+                synonyms: [
+                    { word: 'Withstand', nuance: 'Yüksek kuvvet, basınç, darbe veya sıcaklığa kırılmadan/bozulmadan fiziksel olarak dayanmak.' },
+                    { word: 'Resist', nuance: 'Kimyasal bir etkiye, korozyona veya aşınmaya karşı direnç göstermek (Örn: Resist corrosion).' },
+                    { word: 'Endure', nuance: 'Zorlu şartlara uzun süre boyunca katlanmak / tahammül etmek.' }
+                ]
+            }
+        ];
+
+        // Sample initial custom word so the user immediately sees how "Kendi Kelimelerim" works
+        const INITIAL_CUSTOM_WORDS = [
+            {
+                id: 'cust_demo_1',
+                en: 'FOD (Foreign Object Damage)',
+                tr: 'Yabancı Cisim Hasarı (veya Yabancı Cisim Kalıntısı)',
+                pos: 'Havacılık Kısaltması',
+                category: 'Modül 7: Bakım Uygulamaları',
+                isCustom: true,
+                grammar: 'prevent FOD / inspect engine intake FOR FOD',
+                example: 'Always perform a tool inventory check after maintenance to prevent FOD.',
+                exampleTr: 'Yabancı cisim hasarını (FOD) önlemek için bakımdan sonra daima takım sayımı kontrolü yapın.',
+                usageRule: 'Apronda veya uçak içinde unutulan cıvata, takım, taş gibi yabancı maddelerin motora veya uçak sistemlerine verdiği hasardır.',
+                synonyms: [
+                    { word: 'FOD (Damage)', nuance: 'Yabancı cismin uçağa veya motora verdiği fiziksel hasar.' },
+                    { word: 'FOD (Debris)', nuance: 'Pistte, hangarda veya uçak içinde bulunan yabancı cismin/çöpün kendisi.' },
+                    { word: 'Contamination', nuance: 'Sıvı sistemlerin (yakıt, hidrolik) su, toz veya mikroorganizma ile kirlenmesi.' }
+                ]
+            }
+        ];
+
+        const INITIAL_CUSTOM_LISTS = [
+            'Modül 7: Bakım Uygulamaları',
+            'Modül 6: Malzeme ve Donanım',
+            'Genel İngilizce Notlarım'
+        ];
+
+        /********************************************************************
+         * 2. STATE MANAGEMENT & LOCALSTORAGE PERSISTENCE
+         ********************************************************************/
+        const STORAGE_KEY = 'aerolexis_oxford_v1_state';
+
+        let appState = {
+            customWords: [],
+            customLists: [],
+            masteryMap: {}, // { wordId: 'new' | 'hard' | 'medium' | 'easy' }
+            wrongCounts: {}, // { wordId: number }
+            streak: 1,
+            voiceAccent: 'en-US',
+            theme: 'dark'
+        };
+
+        // Runtime UI State
+        let activeMainTab = 'study';
+        let activeStudyMode = 'flashcard';
+        let activePool = [];
+        let fcIndex = 0;
+        let fcFlipped = false;
+        let fcDirection = 'EN_TR'; // 'EN_TR' or 'TR_EN'
+
+        // Quiz Runtime State
+        let quizDirection = 'EN_TR';
+        let currentQuizWord = null;
+        let quizCorrect = 0;
+        let quizWrong = 0;
+
+        // Cloze Runtime State
+        let currentClozeWord = null;
+
+        // Dictation Runtime State
+        let currentDictationWord = null;
+        let dictationHintLevel = 0;
+
+        // Speed Match Runtime State
+        let matchCards = [];
+        let matchSelected = [];
+        let matchMatchedPairs = 0;
+        let matchStartTime = 0;
+        let matchTimerInterval = null;
+
+        // Selected custom list filter inside "Kendi Kelimelerim" tab
+        let selectedMyWordsListFilter = 'ALL';
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    appState.customWords = Array.isArray(parsed.customWords) ? parsed.customWords : INITIAL_CUSTOM_WORDS;
+                    appState.customLists = Array.isArray(parsed.customLists) ? parsed.customLists : INITIAL_CUSTOM_LISTS;
+                    appState.masteryMap = parsed.masteryMap || {};
+                    appState.wrongCounts = parsed.wrongCounts || {};
+                    appState.streak = typeof parsed.streak === 'number' ? parsed.streak : 1;
+                    appState.voiceAccent = parsed.voiceAccent || 'en-US';
+                    appState.theme = parsed.theme || 'dark';
+                } else {
+                    appState.customWords = JSON.parse(JSON.stringify(INITIAL_CUSTOM_WORDS));
+                    appState.customLists = JSON.parse(JSON.stringify(INITIAL_CUSTOM_LISTS));
+                    saveState();
+                }
+            } catch (err) {
+                console.error('State yüklenemedi, varsayılan kullanılıyor:', err);
+                appState.customWords = JSON.parse(JSON.stringify(INITIAL_CUSTOM_WORDS));
+                appState.customLists = JSON.parse(JSON.stringify(INITIAL_CUSTOM_LISTS));
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                updateSidebarStats();
+            } catch (err) {
+                console.error('State kaydedilemedi:', err);
+            }
+        }
+
+        function getAllWords() {
+            return [...INITIAL_OFFICIAL_WORDS, ...appState.customWords];
+        }
+
+        function getWordMastery(wordId) {
+            return appState.masteryMap[wordId] || 'new';
+        }
+
+        /********************************************************************
+         * 3. INITIALIZATION & THEME / SPEECH HELPERS
+         ********************************************************************/
+        window.onload = function() {
+            loadState();
+            applyThemeUI();
+            const accentSelect = document.getElementById('voiceAccentSelect');
+            if (accentSelect) accentSelect.value = appState.voiceAccent;
+
+            populateFilterDropdowns();
+            applyGlobalFilter();
+            switchMainTab('study');
+            switchStudyMode('flashcard');
+            updateSidebarStats();
+
+            // Keyboard shortcuts for desktop VS Code users
+            document.addEventListener('keydown', function(e) {
+                if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+                if (activeMainTab === 'study' && activeStudyMode === 'flashcard') {
+                    if (e.code === 'Space') {
+                        e.preventDefault();
+                        flipFlashcard();
+                    } else if (e.code === 'ArrowRight') {
+                        nextFlashcard();
+                    } else if (e.code === 'ArrowLeft') {
+                        prevFlashcard();
+                    }
+                }
+            });
+        };
+
+        function toggleTheme() {
+            appState.theme = appState.theme === 'dark' ? 'light' : 'dark';
+            applyThemeUI();
+            saveState();
+        }
+
+        function applyThemeUI() {
+            const htmlEl = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            if (appState.theme === 'dark') {
+                htmlEl.classList.add('dark');
+                if (icon) icon.className = 'fa-solid fa-sun text-amber-400';
+            } else {
+                htmlEl.classList.remove('dark');
+                if (icon) icon.className = 'fa-solid fa-moon text-indigo-600';
+            }
+        }
+
+        function changeAccent(val) {
+            appState.voiceAccent = val;
+            saveState();
+            showToast(`Telaffuz aksanı ${val === 'en-US' ? 'Amerikan (US)' : 'İngiliz (UK)'} olarak ayarlandı.`, 'info');
+        }
+
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) {
+                showToast('Tarayıcınız sesli okuma özelliğini desteklemiyor.', 'error');
+                return;
+            }
+            window.speechSynthesis.cancel();
+            // Clean abbreviations in parentheses for smoother reading
+            const cleanText = text.replace(/\(.*?\)/g, '').trim();
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.lang = appState.voiceAccent || 'en-US';
+            utterance.rate = 0.92;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const colors = {
+                success: 'bg-emerald-600 text-white border-emerald-400',
+                info: 'bg-sky-600 text-white border-sky-400',
+                warning: 'bg-amber-500 text-slate-950 border-amber-300',
+                error: 'bg-rose-600 text-white border-rose-400'
+            };
+            toast.className = `px-4 py-3 rounded-2xl border shadow-xl text-xs font-bold flex items-center gap-2 transition-all duration-300 pointer-events-auto ${colors[type] || colors.info}`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2600);
+        }
+
+        function updateSidebarStats() {
+            const all = getAllWords();
+            const masteredCount = all.filter(w => getWordMastery(w.id) === 'easy').length;
+            document.getElementById('sideStatTotal').textContent = all.length;
+            document.getElementById('sideStatMastered').textContent = masteredCount;
+            document.getElementById('sideStatStreak').textContent = `${appState.streak}🔥`;
+            document.getElementById('customCountBadge').textContent = appState.customWords.length;
+        }
+
+        /********************************************************************
+         * 4. GLOBAL FILTERING & NAVIGATION
+         ********************************************************************/
+        function populateFilterDropdowns() {
+            const optgroup = document.getElementById('customListsOptgroup');
+            if (optgroup) {
+                optgroup.innerHTML = '';
+                appState.customLists.forEach(listName => {
+                    const opt = document.createElement('option');
+                    opt.value = `LIST:${listName}`;
+                    opt.textContent = `📁 ${listName}`;
+                    optgroup.appendChild(opt);
+                });
+            }
+
+            // Also populate the form category dropdown inside Add Word modal
+            const formCat = document.getElementById('formCategory');
+            if (formCat) {
+                formCat.innerHTML = '';
+                appState.customLists.forEach(listName => {
+                    const opt = document.createElement('option');
+                    opt.value = listName;
+                    opt.textContent = `📁 ${listName} (Özel Liste)`;
+                    formCat.appendChild(opt);
+                });
+                ['EASA Part-66 & AMM', 'Oxford 3000/5000', 'Akademik Bağlaçlar & Phrasal Verbs'].forEach(cat => {
+                    const opt = document.createElement('option');
+                    opt.value = cat;
+                    opt.textContent = `🏛️ ${cat}`;
+                    formCat.appendChild(opt);
+                });
+            }
+        }
+
+        function applyGlobalFilter() {
+            const catVal = document.getElementById('globalCategoryFilter').value;
+            const statusVal = document.getElementById('globalStatusFilter').value;
+            const all = getAllWords();
+
+            let filtered = all.filter(w => {
+                if (catVal === 'ALL') return true;
+                if (catVal === 'OFFICIAL_ALL') return !w.isCustom;
+                if (catVal === 'CUSTOM_ALL') return w.isCustom;
+                if (catVal.startsWith('LIST:')) {
+                    const listName = catVal.replace('LIST:', '');
+                    return w.category === listName;
+                }
+                return w.category === catVal;
+            });
+
+            filtered = filtered.filter(w => {
+                const m = getWordMastery(w.id);
+                const wrong = appState.wrongCounts[w.id] || 0;
+                if (statusVal === 'ALL') return true;
+                if (statusVal === 'CRITICAL') return m === 'hard' || wrong > 0;
+                if (statusVal === 'UNLEARNED') return m !== 'easy';
+                if (statusVal === 'MASTERED') return m === 'easy';
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                showToast('Seçilen filtrede kelime bulunamadı, tüm kelimeler gösteriliyor.', 'warning');
+                filtered = all;
+            }
+
+            activePool = filtered;
+            fcIndex = 0;
+            fcFlipped = false;
+
+            document.getElementById('activePoolBadge').textContent = `Aktif Havuz: ${activePool.length} Kelime`;
+
+            refreshCurrentStudyView();
+            if (activeMainTab === 'nuance') renderNuanceDirectory();
+        }
+
+        function switchMainTab(tabId) {
+            activeMainTab = tabId;
+            document.querySelectorAll('.tab-section').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`tabContent-${tabId}`);
+            if (target) target.classList.remove('hidden');
+
+            // Desktop nav highlight
+            ['study', 'nuance', 'mywords', 'library'].forEach(id => {
+                const btn = document.getElementById(`navBtn-${id}`);
+                if (btn) {
+                    if (id === tabId) {
+                        btn.className = 'nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-bold bg-sky-500 text-white shadow-lg shadow-sky-500/25 transition-all';
+                    } else {
+                        btn.className = 'nav-btn w-full flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-all';
+                    }
+                }
+                const mobBtn = document.getElementById(`mobNav-${id}`);
+                if (mobBtn) {
+                    if (id === tabId) {
+                        mobBtn.className = 'mob-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-sky-500 bg-sky-500/10 transition';
+                    } else {
+                        mobBtn.className = 'mob-nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 dark:text-slate-400 transition';
+                    }
+                }
+            });
+
+            if (tabId === 'study') refreshCurrentStudyView();
+            if (tabId === 'nuance') renderNuanceDirectory();
+            if (tabId === 'mywords') renderMyWordsTab();
+            if (tabId === 'library') renderOfficialLibraryTab();
+        }
+
+        function switchStudyMode(modeId) {
+            activeStudyMode = modeId;
+            document.querySelectorAll('.study-panel').forEach(p => p.classList.add('hidden'));
+            const panel = document.getElementById(`studyPanel-${modeId}`);
+            if (panel) panel.classList.remove('hidden');
+
+            ['flashcard', 'quiz', 'cloze', 'deepview', 'dictation', 'match'].forEach(m => {
+                const btn = document.getElementById(`modeBtn-${m}`);
+                if (!btn) return;
+                if (m === modeId) {
+                    btn.className = 'study-mode-btn flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-sky-500 bg-sky-500/15 text-sky-600 dark:text-sky-400 shadow-md transition-all';
+                } else {
+                    btn.className = 'study-mode-btn flex flex-col items-center justify-center p-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-cockpit-900 text-slate-600 dark:text-slate-400 hover:border-sky-500/40 transition-all';
+                }
+            });
+
+            refreshCurrentStudyView();
+        }
+
+        function refreshCurrentStudyView() {
+            if (activeStudyMode === 'flashcard') renderFlashcard();
+            if (activeStudyMode === 'quiz') generateQuizQuestion();
+            if (activeStudyMode === 'cloze') generateClozeQuestion();
+            if (activeStudyMode === 'deepview') renderInlineDeepView();
+            if (activeStudyMode === 'dictation') generateDictationQuestion();
+            if (activeStudyMode === 'match') initMatchGame();
+        }
+
+        /********************************************************************
+         * 5. MODE 1: KELİME KARTLARI (3D FLASHCARDS EN<->TR + SRS)
+         ********************************************************************/
+        function setCardDirection(dir) {
+            fcDirection = dir;
+            fcFlipped = false;
+            document.getElementById('dirBtn-EN_TR').className = dir === 'EN_TR'
+                ? 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-sky-500 text-white shadow'
+                : 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-300';
+            document.getElementById('dirBtn-TR_EN').className = dir === 'TR_EN'
+                ? 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-sky-500 text-white shadow'
+                : 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-300';
+            renderFlashcard();
+        }
+
+        function renderFlashcard() {
+            if (!activePool.length) return;
+            if (fcIndex >= activePool.length) fcIndex = 0;
+            if (fcIndex < 0) fcIndex = activePool.length - 1;
+
+            const word = activePool[fcIndex];
+            const inner = document.getElementById('flashcardInner');
+            fcFlipped = false;
+            inner.classList.remove('rotate-y-180');
+
+            document.getElementById('flashcardCounter').textContent = `${fcIndex + 1} / ${activePool.length}`;
+            document.getElementById('fcFrontCategory').textContent = word.category;
+            document.getElementById('fcFrontPos').textContent = word.pos;
+
+            // Mastery Badge
+            const mastery = getWordMastery(word.id);
+            const mEl = document.getElementById('fcFrontMastery');
+            if (mastery === 'easy') {
+                mEl.textContent = '✓ Öğrenildi';
+                mEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-500';
+            } else if (mastery === 'hard') {
+                mEl.textContent = '🚨 Zor / Kritik';
+                mEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-rose-500/15 text-rose-500';
+            } else if (mastery === 'medium') {
+                mEl.textContent = '⏳ Tekrar Listesinde';
+                mEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-amber-500/15 text-amber-500';
+            } else {
+                mEl.textContent = '✨ Yeni Kelime';
+                mEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-cockpit-800 text-slate-500';
+            }
+
+            // Direction EN->TR vs TR->EN
+            if (fcDirection === 'EN_TR') {
+                document.getElementById('fcFrontDirectionLabel').textContent = '🇬🇧 İNGİLİZCE TERİM (TÜRKÇESİNİ DÜŞÜN)';
+                document.getElementById('fcFrontMainText').textContent = word.en;
+                document.getElementById('fcFrontSubHint').textContent = word.grammar || '';
+                document.getElementById('fcBackWordTitle').textContent = word.en;
+                document.getElementById('fcBackMeaning').textContent = word.tr;
+            } else {
+                document.getElementById('fcFrontDirectionLabel').textContent = '🇹🇷 TÜRKÇE ANLAMI (İNGİLİZCESİNİ DÜŞÜN)';
+                document.getElementById('fcFrontMainText').textContent = word.tr;
+                document.getElementById('fcFrontSubHint').textContent = `İpucu Tür: ${word.pos}`;
+                document.getElementById('fcBackWordTitle').textContent = word.tr;
+                document.getElementById('fcBackMeaning').textContent = `🇬🇧 ${word.en}`;
+            }
+
+            document.getElementById('fcBackPos').textContent = `(${word.pos})`;
+            document.getElementById('fcBackGrammar').textContent = word.grammar || 'Standart kullanım';
+            document.getElementById('fcBackExample').textContent = `"${word.example || '-'}"`;
+            document.getElementById('fcBackExampleTr').textContent = word.exampleTr || '';
+
+            const synList = (word.synonyms || []).map(s => s.word).join(' • ');
+            document.getElementById('fcBackSynonyms').textContent = synList || 'Muadil listesi eklenmemiş';
+        }
+
+        function flipFlashcard() {
+            fcFlipped = !fcFlipped;
+            const inner = document.getElementById('flashcardInner');
+            if (fcFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextFlashcard() {
+            fcIndex = (fcIndex + 1) % activePool.length;
+            renderFlashcard();
+        }
+
+        function prevFlashcard() {
+            fcIndex = (fcIndex - 1 + activePool.length) % activePool.length;
+            renderFlashcard();
+        }
+
+        function shuffleActivePool() {
+            for (let i = activePool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [activePool[i], activePool[j]] = [activePool[j], activePool[i]];
+            }
+            fcIndex = 0;
+            renderFlashcard();
+            showToast('Çalışma kartları karıştırıldı!', 'info');
+        }
+
+        function speakCurrentWord() {
+            if (!activePool.length) return;
+            speakText(activePool[fcIndex].en);
+        }
+
+        function rateCurrentWord(level) {
+            if (!activePool.length) return;
+            const word = activePool[fcIndex];
+            appState.masteryMap[word.id] = level;
+            if (level === 'hard') {
+                appState.wrongCounts[word.id] = (appState.wrongCounts[word.id] || 0) + 1;
+            }
+            saveState();
+
+            const labels = {
+                hard: 'Zor olarak işaretlendi (Kritik Tekrar Havuzuna eklendi)',
+                medium: 'Orta olarak işaretlendi',
+                easy: 'Harika! Öğrenildi olarak işaretlendi'
+            };
+            showToast(labels[level], level === 'easy' ? 'success' : 'info');
+            nextFlashcard();
+        }
+
+        /********************************************************************
+         * 6. MODE 2: ÇOKTAN SEÇMELİ SINAV MODU (MULTIPLE CHOICE QUIZ)
+         ********************************************************************/
+        function setQuizDirection(dir) {
+            quizDirection = dir;
+            ['EN_TR', 'TR_EN', 'MIXED'].forEach(d => {
+                const btn = document.getElementById(`quizDir-${d}`);
+                if (!btn) return;
+                btn.className = d === dir
+                    ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-500 text-white shadow'
+                    : 'px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-300';
+            });
+            generateQuizQuestion();
+        }
+
+        function generateQuizQuestion() {
+            if (!activePool.length) return;
+            const allWords = getAllWords();
+            currentQuizWord = activePool[Math.floor(Math.random() * activePool.length)];
+
+            const effectiveDir = quizDirection === 'MIXED'
+                ? (Math.random() > 0.5 ? 'EN_TR' : 'TR_EN')
+                : quizDirection;
+
+            document.getElementById('quizCategoryBadge').textContent = `${currentQuizWord.category} • ${currentQuizWord.pos}`;
+            document.getElementById('quizFeedbackBox').classList.add('hidden');
+
+            if (effectiveDir === 'EN_TR') {
+                document.getElementById('quizPromptType').textContent = '🇬🇧 İNGİLİZCE TERİMİN DOĞRU TÜRKÇE KARŞILIĞINI SEÇİN';
+                document.getElementById('quizQuestionText').textContent = currentQuizWord.en;
+                document.getElementById('quizGrammarClue').textContent = currentQuizWord.grammar ? `Kural İpucu: ${currentQuizWord.grammar}` : '';
+            } else {
+                document.getElementById('quizPromptType').textContent = '🇹🇷 VERİLEN ANLAMA UYGUN İNGİLİZCE TERİMİ SEÇİN';
+                document.getElementById('quizQuestionText').textContent = currentQuizWord.tr;
+                document.getElementById('quizGrammarClue').textContent = currentQuizWord.usageRule ? `Kullanım: ${currentQuizWord.usageRule}` : '';
+            }
+
+            // Pick 3 smart distractors (prefer same category or POS)
+            const otherWords = allWords.filter(w => w.id !== currentQuizWord.id);
+            otherWords.sort((a, b) => {
+                const scoreA = (a.category === currentQuizWord.category ? 2 : 0) + (a.pos === currentQuizWord.pos ? 1 : 0) + Math.random();
+                const scoreB = (b.category === currentQuizWord.category ? 2 : 0) + (b.pos === currentQuizWord.pos ? 1 : 0) + Math.random();
+                return scoreB - scoreA;
+            });
+
+            const distractors = otherWords.slice(0, 3);
+            const options = [currentQuizWord, ...distractors].sort(() => Math.random() - 0.5);
+
+            const container = document.getElementById('quizOptionsContainer');
+            container.innerHTML = '';
+
+            options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                const letter = ['A', 'B', 'C', 'D'][idx];
+                const optionLabel = effectiveDir === 'EN_TR' ? opt.tr : opt.en;
+                btn.className = 'quiz-opt-btn w-full text-left p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 hover:border-sky-500/60 bg-slate-50/60 dark:bg-cockpit-800/60 flex items-center gap-3.5 transition active:scale-[0.99]';
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-xl bg-slate-200 dark:bg-cockpit-900 font-mono font-extrabold text-xs flex items-center justify-center shrink-0">${letter}</span>
+                    <span class="font-semibold text-sm sm:text-base flex-1">${optionLabel}</span>
+                `;
+                btn.onclick = () => checkQuizAnswer(opt.id, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkQuizAnswer(selectedId, clickedBtn) {
+            const buttons = document.querySelectorAll('.quiz-opt-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            const isCorrect = selectedId === currentQuizWord.id;
+            const fbBox = document.getElementById('quizFeedbackBox');
+            const fbTitle = document.getElementById('quizFeedbackTitle');
+
+            if (isCorrect) {
+                quizCorrect++;
+                appState.streak++;
+                appState.masteryMap[currentQuizWord.id] = 'easy';
+                clickedBtn.className = 'quiz-opt-btn w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 flex items-center gap-3.5 font-bold';
+                fbBox.className = 'p-4 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 space-y-2';
+                fbTitle.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i>Doğru Cevap! (${currentQuizWord.en} = ${currentQuizWord.tr})`;
+            } else {
+                quizWrong++;
+                appState.masteryMap[currentQuizWord.id] = 'hard';
+                appState.wrongCounts[currentQuizWord.id] = (appState.wrongCounts[currentQuizWord.id] || 0) + 1;
+                clickedBtn.className = 'quiz-opt-btn w-full text-left p-4 rounded-2xl border-2 border-rose-500 bg-rose-500/15 text-rose-600 dark:text-rose-300 flex items-center gap-3.5 font-bold';
+                fbBox.className = 'p-4 rounded-2xl border border-rose-500/40 bg-rose-500/10 space-y-2';
+                fbTitle.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i>Yanlış! Doğru Cevap: <span class="underline">${currentQuizWord.en}</span> (${currentQuizWord.tr}) — Kritik Tekrar Havuzuna eklendi.`;
+            }
+
+            document.getElementById('quizCorrectCount').textContent = quizCorrect;
+            document.getElementById('quizWrongCount').textContent = quizWrong;
+            document.getElementById('quizFeedbackRule').textContent = `📌 Kural: ${currentQuizWord.grammar || '-'} | ${currentQuizWord.usageRule || ''}`;
+            document.getElementById('quizFeedbackExample').textContent = `✈️ Örnek: "${currentQuizWord.example || ''}" (${currentQuizWord.exampleTr || ''})`;
+            fbBox.classList.remove('hidden');
+            saveState();
+        }
+
+        function speakQuizWord() {
+            if (currentQuizWord) speakText(currentQuizWord.en);
+        }
+
+        function openDeepModalForQuizWord() {
+            if (currentQuizWord) openDeepInspectModal(currentQuizWord.id);
+        }
+
+        /********************************************************************
+         * 7. MODE 3: BAĞLAM İÇİ BOŞLUK DOLDURMA (AMM / CLOZE TEST)
+         ********************************************************************/
+        function generateClozeQuestion() {
+            if (!activePool.length) return;
+            const candidates = activePool.filter(w => w.example && w.example.trim().length > 5);
+            const poolToUse = candidates.length ? candidates : activePool;
+            currentClozeWord = poolToUse[Math.floor(Math.random() * poolToUse.length)];
+
+            document.getElementById('clozeCategoryBadge').textContent = currentClozeWord.category;
+            document.getElementById('clozeFeedbackBox').classList.add('hidden');
+
+            // Mask the target word inside the example sentence
+            const baseWord = currentClozeWord.en.split('(')[0].trim();
+            const regex = new RegExp(baseWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[a-zA-Z]*', 'gi');
+            let maskedSentence = currentClozeWord.example;
+            if (regex.test(maskedSentence)) {
+                maskedSentence = maskedSentence.replace(regex, '_______');
+            } else {
+                maskedSentence = `${currentClozeWord.example} (Hedef Terim: _______)`;
+            }
+
+            document.getElementById('clozeSentenceEn').textContent = maskedSentence;
+            document.getElementById('clozeSentenceTr').innerHTML = `<i class="fa-solid fa-language text-sky-500 mr-1.5"></i>Çeviri: "${currentClozeWord.exampleTr || currentClozeWord.tr}"`;
+            document.getElementById('clozeGrammarHint').textContent = currentClozeWord.grammar ? `Kural: ${currentClozeWord.grammar}` : '';
+
+            // Build 4 options (include synonyms or close words if available)
+            const allWords = getAllWords().filter(w => w.id !== currentClozeWord.id);
+            const shuffledOthers = allWords.sort(() => Math.random() - 0.5).slice(0, 3);
+            const options = [currentClozeWord, ...shuffledOthers].sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('clozeOptionsGrid');
+            grid.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'cloze-opt-btn p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 hover:border-sky-500 bg-slate-50 dark:bg-cockpit-800 font-mono font-bold text-sm sm:text-base transition text-left flex items-center justify-between';
+                btn.innerHTML = `<span>${opt.en}</span><span class="text-[11px] font-sans font-normal text-slate-400">${opt.pos.split(' ')[0]}</span>`;
+                btn.onclick = () => checkClozeAnswer(opt, btn);
+                grid.appendChild(btn);
+            });
+        }
+
+        function checkClozeAnswer(selectedOpt, btn) {
+            document.querySelectorAll('.cloze-opt-btn').forEach(b => b.disabled = true);
+            const isCorrect = selectedOpt.id === currentClozeWord.id;
+            const fbBox = document.getElementById('clozeFeedbackBox');
+            const fbText = document.getElementById('clozeFeedbackText');
+            const fbNuance = document.getElementById('clozeFeedbackNuance');
+
+            document.getElementById('clozeSentenceEn').innerHTML = currentClozeWord.example.replace(
+                new RegExp(currentClozeWord.en.split('(')[0].trim(), 'gi'),
+                `<span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 underline font-extrabold">${currentClozeWord.en}</span>`
+            );
+
+            if (isCorrect) {
+                btn.className = 'cloze-opt-btn p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-500/15 text-emerald-500 font-mono font-bold text-sm sm:text-base';
+                fbBox.className = 'p-4 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 space-y-2';
+                fbText.innerHTML = `<i class="fa-solid fa-check-circle text-emerald-500 mr-1.5"></i>Mükemmel! Doğru terimi bağlama yerleştirdin.`;
+                speakText(currentClozeWord.en);
+            } else {
+                btn.className = 'cloze-opt-btn p-4 rounded-2xl border-2 border-rose-500 bg-rose-500/15 text-rose-500 font-mono font-bold text-sm sm:text-base';
+                fbBox.className = 'p-4 rounded-2xl border border-rose-500/40 bg-rose-500/10 space-y-2';
+                fbText.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-500 mr-1.5"></i>Doğru Terim: <span class="underline">${currentClozeWord.en}</span> (${currentClozeWord.tr})`;
+                appState.wrongCounts[currentClozeWord.id] = (appState.wrongCounts[currentClozeWord.id] || 0) + 1;
+                saveState();
+            }
+
+            fbNuance.textContent = currentClozeWord.usageRule || '';
+            fbBox.classList.remove('hidden');
+        }
+
+        /********************************************************************
+         * 8. MODE 4: DERİNLEMESİNE ANALİZ & MUADİL REHBERİ (NUANCE MATRIX)
+         ********************************************************************/
+        function buildDeepWordCardHTML(word, showNavButtons = false) {
+            const synonymsHTML = (word.synonyms && word.synonyms.length > 0)
+                ? word.synonyms.map(s => `
+                    <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-cockpit-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                        <div class="sm:w-44 shrink-0 flex items-center justify-between sm:justify-start gap-2">
+                            <span class="font-mono font-extrabold text-sm text-sky-600 dark:text-sky-400">${s.word}</span>
+                            <button onclick="speakText('${s.word.replace(/'/g, "\\'")}')" class="w-7 h-7 rounded-lg bg-sky-500/10 text-sky-500 flex items-center justify-center text-xs" title="Dinle">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+                        <div class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed flex-1">
+                            ${s.nuance}
+                        </div>
+                    </div>
+                `).join('')
+                : `<p class="text-xs text-slate-400 italic">Bu kelime için henüz muadil karşılaştırması girilmemiş. Düzenle butonundan ekleyebilirsiniz.</p>`;
+
+            const navControls = showNavButtons ? `
+                <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
+                    <button onclick="prevInlineDeepWord()" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 font-bold text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-chevron-left"></i> Önceki Kelime
+                    </button>
+                    <span class="text-xs font-mono text-slate-400">${fcIndex + 1} / ${activePool.length}</span>
+                    <button onclick="nextInlineDeepWord()" class="px-4 py-2.5 rounded-xl bg-sky-500 text-white font-bold text-xs flex items-center gap-1.5">
+                        Sonraki Kelime <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            ` : '';
+
+            return `
+                <div class="bg-white dark:bg-cockpit-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 shadow-md space-y-5">
+                    <!-- Top Word Header -->
+                    <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-sky-500/15 text-sky-500">${word.category}</span>
+                                <span class="text-[11px] font-mono px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-cockpit-800 text-slate-500">${word.pos}</span>
+                            </div>
+                            <div class="flex items-center gap-3 mt-2">
+                                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white font-mono">${word.en}</h3>
+                                <button onclick="speakText('${word.en.replace(/'/g, "\\'")}')" class="w-10 h-10 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 text-sky-500 flex items-center justify-center transition">
+                                    <i class="fa-solid fa-volume-high"></i>
+                                </button>
+                            </div>
+                            <p class="text-base sm:text-lg font-bold text-emerald-600 dark:text-emerald-400 mt-1">${word.tr}</p>
+                        </div>
+
+                        <button onclick="openWordModal('${word.id}')" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            <span>Düzenle / Not Ekle</span>
+                        </button>
+                    </div>
+
+                    <!-- Grammar & Usage Rules Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                        <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 space-y-1">
+                            <div class="text-[11px] font-mono uppercase font-extrabold text-amber-500">
+                                <i class="fa-solid fa-code-branch mr-1"></i>Gramer & Edat Formülü
+                            </div>
+                            <p class="text-xs sm:text-sm font-mono font-bold text-slate-800 dark:text-amber-200">${word.grammar || 'Standart kullanım'}</p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/25 space-y-1">
+                            <div class="text-[11px] font-mono uppercase font-extrabold text-indigo-500 dark:text-indigo-400">
+                                <i class="fa-solid fa-compass-drafting mr-1"></i>Resmi & Teknik Kullanım Kuralı (STE100)
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">${word.usageRule || 'Genel ve teknik metinlerde standart anlamıyla kullanılır.'}</p>
+                        </div>
+                    </div>
+
+                    <!-- Context Sentence -->
+                    <div class="p-4 rounded-2xl bg-slate-100/70 dark:bg-cockpit-800/50 border border-slate-200 dark:border-slate-800 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-mono uppercase font-bold text-emerald-500"><i class="fa-solid fa-plane-circle-check mr-1"></i>Bağlam İçi Örnek Cümle</span>
+                            <button onclick="speakText('${(word.example || '').replace(/'/g, "\\'")}')" class="text-xs text-sky-500 hover:underline"><i class="fa-solid fa-volume-low mr-1"></i>Cümleyi Dinle</button>
+                        </div>
+                        <p class="text-xs sm:text-sm font-medium italic text-slate-900 dark:text-white">"${word.example || '-'}"</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">${word.exampleTr || ''}</p>
+                    </div>
+
+                    <!-- Synonyms & Nuances Matrix -->
+                    <div class="space-y-2.5">
+                        <h4 class="text-xs font-mono uppercase tracking-wider font-extrabold text-sky-500 flex items-center gap-1.5">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                            <span>Muadil Kelimeler ve Hangi Durumda Hangisinin Seçileceği (Nuance Matrix)</span>
+                        </h4>
+                        <div class="space-y-2">
+                            ${synonymsHTML}
+                        </div>
+                    </div>
+
+                    ${navControls}
+                </div>
+            `;
+        }
+
+        function renderInlineDeepView() {
+            if (!activePool.length) return;
+            if (fcIndex >= activePool.length) fcIndex = 0;
+            const word = activePool[fcIndex];
+            document.getElementById('inlineDeepCardContainer').innerHTML = buildDeepWordCardHTML(word, true);
+        }
+
+        function nextInlineDeepWord() {
+            fcIndex = (fcIndex + 1) % activePool.length;
+            renderInlineDeepView();
+        }
+
+        function prevInlineDeepWord() {
+            fcIndex = (fcIndex - 1 + activePool.length) % activePool.length;
+            renderInlineDeepView();
+        }
+
+        function renderNuanceDirectory() {
+            const query = (document.getElementById('nuanceSearchInput')?.value || '').toLowerCase().trim();
+            const container = document.getElementById('nuanceDirectoryGrid');
+            if (!container) return;
+
+            const filtered = activePool.filter(w => {
+                if (!query) return true;
+                const inMain = w.en.toLowerCase().includes(query) || w.tr.toLowerCase().includes(query) || (w.grammar || '').toLowerCase().includes(query);
+                const inSyn = (w.synonyms || []).some(s => s.word.toLowerCase().includes(query) || s.nuance.toLowerCase().includes(query));
+                return inMain || inSyn;
+            });
+
+            container.innerHTML = filtered.map(w => buildDeepWordCardHTML(w, false)).join('');
+        }
+
+        function openDeepModalForCurrent() {
+            if (!activePool.length) return;
+            openDeepInspectModal(activePool[fcIndex].id);
+        }
+
+        function openDeepInspectModal(wordId) {
+            const word = getAllWords().find(w => w.id === wordId);
+            if (!word) return;
+            document.getElementById('deepInspectModalBody').innerHTML = buildDeepWordCardHTML(word, false);
+            document.getElementById('deepInspectModal').classList.remove('hidden');
+        }
+
+        function closeDeepInspectModal() {
+            document.getElementById('deepInspectModal').classList.add('hidden');
+        }
+
+        /********************************************************************
+         * 9. MODE 5: AKTİF YAZMA & DİKTE (SPELLING & AUDIO)
+         ********************************************************************/
+        function generateDictationQuestion() {
+            if (!activePool.length) return;
+            currentDictationWord = activePool[Math.floor(Math.random() * activePool.length)];
+            dictationHintLevel = 0;
+
+            document.getElementById('dictationMeaningPrompt').textContent = currentDictationWord.tr;
+            document.getElementById('dictationGrammarPrompt').textContent = currentDictationWord.grammar ? `İpucu: ${currentDictationWord.grammar}` : `Tür: ${currentDictationWord.pos}`;
+            const input = document.getElementById('dictationInput');
+            input.value = '';
+            input.placeholder = 'İngilizce karşılığını yazın...';
+            document.getElementById('dictationFeedback').classList.add('hidden');
+        }
+
+        function speakDictationWord() {
+            if (currentDictationWord) speakText(currentDictationWord.en);
+        }
+
+        function giveDictationHint() {
+            if (!currentDictationWord) return;
+            dictationHintLevel++;
+            const cleanTarget = currentDictationWord.en.split('(')[0].trim();
+            const revealed = cleanTarget.slice(0, dictationHintLevel);
+            const masked = revealed + '_'.repeat(Math.max(0, cleanTarget.length - dictationHintLevel));
+            document.getElementById('dictationInput').placeholder = `İpucu: ${masked}`;
+            speakDictationWord();
+        }
+
+        function checkDictationAnswer() {
+            if (!currentDictationWord) return;
+            const userVal = document.getElementById('dictationInput').value.trim().toLowerCase();
+            const cleanTarget = currentDictationWord.en.split('(')[0].trim().toLowerCase();
+            const fb = document.getElementById('dictationFeedback');
+
+            if (userVal === cleanTarget || userVal === currentDictationWord.en.toLowerCase()) {
+                fb.className = 'p-4 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-500 font-bold text-sm space-y-2';
+                fb.innerHTML = `
+                    <div><i class="fa-solid fa-circle-check mr-1"></i>Harika! Yazım tamamen doğru: <span class="font-mono underline">${currentDictationWord.en}</span></div>
+                    <button onclick="generateDictationQuestion()" class="px-4 py-2 rounded-xl bg-emerald-500 text-white text-xs font-bold">Sonraki Kelime</button>
+                `;
+                appState.masteryMap[currentDictationWord.id] = 'easy';
+                saveState();
+                speakDictationWord();
+            } else {
+                fb.className = 'p-4 rounded-2xl border border-rose-500/40 bg-rose-500/10 text-rose-500 font-bold text-sm space-y-2';
+                fb.innerHTML = `
+                    <div><i class="fa-solid fa-circle-xmark mr-1"></i>Doğru Yazımı: <span class="font-mono underline">${currentDictationWord.en}</span></div>
+                    <div class="text-xs font-normal text-slate-500 dark:text-slate-300">${currentDictationWord.example || ''}</div>
+                    <button onclick="generateDictationQuestion()" class="px-4 py-2 rounded-xl bg-sky-500 text-white text-xs font-bold">Sonraki Kelime</button>
+                `;
+            }
+            fb.classList.remove('hidden');
+        }
+
+        /********************************************************************
+         * 10. MODE 6: HIZLI EŞLEŞTİRME (SPEED MATCH)
+         ********************************************************************/
+        function initMatchGame() {
+            if (matchTimerInterval) clearInterval(matchTimerInterval);
+            const source = activePool.length >= 6 ? activePool : getAllWords();
+            const chosen = [...source].sort(() => Math.random() - 0.5).slice(0, 6);
+
+            matchCards = [];
+            chosen.forEach(w => {
+                matchCards.push({ id: `en_${w.id}`, wordId: w.id, text: w.en, type: 'EN', matched: false });
+                matchCards.push({ id: `tr_${w.id}`, wordId: w.id, text: w.tr, type: 'TR', matched: false });
+            });
+            matchCards.sort(() => Math.random() - 0.5);
+
+            matchSelected = [];
+            matchMatchedPairs = 0;
+            matchStartTime = Date.now();
+            document.getElementById('matchPairsCount').textContent = `0 / ${chosen.length}`;
+
+            matchTimerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - matchStartTime) / 1000).toFixed(1);
+                const timerEl = document.getElementById('matchTimer');
+                if (timerEl) timerEl.textContent = `${elapsed}s`;
+            }, 100);
+
+            renderMatchBoard(chosen.length);
+        }
+
+        function renderMatchBoard(totalPairs = 6) {
+            const grid = document.getElementById('matchBoardGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            matchCards.forEach(card => {
+                const btn = document.createElement('button');
+                const isSelected = matchSelected.some(s => s.id === card.id);
+                if (card.matched) {
+                    btn.className = 'p-4 h-24 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-500 font-bold text-xs flex items-center justify-center text-center opacity-40 cursor-default';
+                    btn.innerHTML = `<i class="fa-solid fa-check text-lg"></i>`;
+                    btn.disabled = true;
+                } else if (isSelected) {
+                    btn.className = 'p-4 h-24 rounded-2xl border-2 border-sky-500 bg-sky-500/20 text-sky-500 font-bold text-xs sm:text-sm flex items-center justify-center text-center shadow-lg scale-[1.02] transition';
+                    btn.textContent = card.text;
+                } else {
+                    btn.className = 'p-4 h-24 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-cockpit-900 hover:border-sky-500/50 font-semibold text-xs sm:text-sm flex items-center justify-center text-center shadow-sm transition active:scale-95';
+                    btn.textContent = card.text;
+                }
+                btn.onclick = () => selectMatchCard(card, totalPairs);
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectMatchCard(card, totalPairs) {
+            if (card.matched || matchSelected.some(s => s.id === card.id)) return;
+            if (matchSelected.length >= 2) return;
+
+            matchSelected.push(card);
+            renderMatchBoard(totalPairs);
+
+            if (matchSelected.length === 2) {
+                const [first, second] = matchSelected;
+                if (first.wordId === second.wordId && first.type !== second.type) {
+                    first.matched = true;
+                    second.matched = true;
+                    matchMatchedPairs++;
+                    matchSelected = [];
+                    document.getElementById('matchPairsCount').textContent = `${matchMatchedPairs} / ${totalPairs}`;
+                    renderMatchBoard(totalPairs);
+
+                    if (matchMatchedPairs === totalPairs) {
+                        clearInterval(matchTimerInterval);
+                        const finalTime = document.getElementById('matchTimer').textContent;
+                        showToast(`Tebrikler! Tüm terimleri ${finalTime} içinde eşleştirdin!`, 'success');
+                    }
+                } else {
+                    setTimeout(() => {
+                        matchSelected = [];
+                        renderMatchBoard(totalPairs);
+                    }, 550);
+                }
+            }
+        }
+
+        /********************************************************************
+         * 11. TAB 3: KENDİ KELİMELERİM & ÖZEL KOLEKSİYON YÖNETİMİ
+         ********************************************************************/
+        function renderMyWordsTab() {
+            populateFilterDropdowns();
+            const chipsBar = document.getElementById('customListsBar');
+            const container = document.getElementById('myWordsContainer');
+
+            // Render custom list filter pills
+            let chipsHTML = `
+                <button onclick="filterMyWordsByList('ALL')" class="px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition ${selectedMyWordsListFilter === 'ALL' ? 'bg-sky-500 text-white shadow' : 'bg-white dark:bg-cockpit-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300'}">
+                    Tüm Eklediklerim (${appState.customWords.length})
+                </button>
+            `;
+            appState.customLists.forEach(listName => {
+                const count = appState.customWords.filter(w => w.category === listName).length;
+                const active = selectedMyWordsListFilter === listName;
+                chipsHTML += `
+                    <div class="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition ${active ? 'bg-amber-500 text-slate-950 shadow' : 'bg-white dark:bg-cockpit-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300'}">
+                        <button onclick="filterMyWordsByList('${listName.replace(/'/g, "\\'")}')" class="flex items-center gap-1.5">
+                            <i class="fa-solid fa-folder"></i>
+                            <span>${listName} (${count})</span>
+                        </button>
+                        <button onclick="studySpecificList('${listName.replace(/'/g, "\\'")}')" title="Bu listeyi çalış" class="ml-1.5 px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-500 hover:bg-sky-500 hover:text-white text-[10px]">
+                            Çalış ▶
+                        </button>
+                    </div>
+                `;
+            });
+            chipsBar.innerHTML = chipsHTML;
+
+            // Filter custom words
+            const wordsToShow = selectedMyWordsListFilter === 'ALL'
+                ? appState.customWords
+                : appState.customWords.filter(w => w.category === selectedMyWordsListFilter);
+
+            if (wordsToShow.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white dark:bg-cockpit-900 rounded-3xl border border-dashed border-slate-300 dark:border-slate-700 p-10 text-center space-y-3">
+                        <div class="w-14 h-14 rounded-2xl bg-sky-500/10 text-sky-500 flex items-center justify-center mx-auto text-2xl">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </div>
+                        <h3 class="font-bold text-base">Bu listede henüz kelime yok</h3>
+                        <p class="text-xs text-slate-400 max-w-md mx-auto">Hemen "Yeni Kelime Ekle" butonuna tıklayarak kendi uçak bakım terimlerini veya genel İngilizce kelimelerini ekleyebilirsin.</p>
+                        <button onclick="openWordModal()" class="px-5 py-2.5 rounded-xl bg-sky-500 text-white text-xs font-bold shadow">
+                            + İlk Kelimeni Ekle
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = wordsToShow.map(w => `
+                <div class="bg-white dark:bg-cockpit-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 flex flex-col justify-between gap-3 shadow-sm">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-amber-500/15 text-amber-500">${w.category}</span>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="speakText('${w.en.replace(/'/g, "\\'")}')" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-cockpit-800 text-sky-500 flex items-center justify-center text-xs">
+                                    <i class="fa-solid fa-volume-high"></i>
+                                </button>
+                                <button onclick="openWordModal('${w.id}')" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-cockpit-800 text-slate-500 hover:text-sky-500 flex items-center justify-center text-xs" title="Düzenle">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="deleteCustomWord('${w.id}')" class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white flex items-center justify-center text-xs" title="Sil">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-extrabold font-mono text-slate-900 dark:text-white">${w.en} <span class="text-xs font-sans font-normal text-slate-400">(${w.pos})</span></h4>
+                            <p class="text-sm font-bold text-emerald-600 dark:text-emerald-400">${w.tr}</p>
+                        </div>
+
+                        ${w.grammar ? `<p class="text-xs font-mono text-amber-500 bg-amber-500/10 px-2.5 py-1 rounded-lg">${w.grammar}</p>` : ''}
+                        ${w.example ? `<p class="text-xs italic text-slate-500 dark:text-slate-400">"${w.example}"</p>` : ''}
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+                        <span class="text-slate-400">${(w.synonyms || []).length} Muadil Notu</span>
+                        <button onclick="openDeepInspectModal('${w.id}')" class="text-sky-500 font-bold hover:underline">
+                            Muadil & Kural Kartı <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterMyWordsByList(listName) {
+            selectedMyWordsListFilter = listName;
+            renderMyWordsTab();
+        }
+
+        function studySpecificList(listName) {
+            const select = document.getElementById('globalCategoryFilter');
+            select.value = `LIST:${listName}`;
+            applyGlobalFilter();
+            switchMainTab('study');
+            showToast(`"${listName}" listesi çalışma merkezine yüklendi!`, 'info');
+        }
+
+        function openNewListModal() {
+            document.getElementById('newCustomListName').value = '';
+            document.getElementById('newListModal').classList.remove('hidden');
+        }
+
+        function closeNewListModal() {
+            document.getElementById('newListModal').classList.add('hidden');
+        }
+
+        function createNewCustomList() {
+            const name = document.getElementById('newCustomListName').value.trim();
+            if (!name) return;
+            if (!appState.customLists.includes(name)) {
+                appState.customLists.push(name);
+                saveState();
+                populateFilterDropdowns();
+                renderMyWordsTab();
+                showToast(`"${name}" koleksiyonu oluşturuldu!`, 'success');
+            }
+            closeNewListModal();
+        }
+
+        /********************************************************************
+         * 12. ADD / EDIT WORD MODAL LOGIC
+         ********************************************************************/
+        function openWordModal(editWordId = null) {
+            populateFilterDropdowns();
+            const form = document.getElementById('wordForm');
+            form.reset();
+            const synContainer = document.getElementById('formSynonymsContainer');
+            synContainer.innerHTML = '';
+
+            if (editWordId) {
+                const word = getAllWords().find(w => w.id === editWordId);
+                if (!word) return;
+                document.getElementById('wordModalTitle').textContent = 'Kelimeyi / Muadilleri Düzenle';
+                document.getElementById('formWordId').value = word.id;
+                document.getElementById('formEn').value = word.en;
+                document.getElementById('formTr').value = word.tr;
+                document.getElementById('formPos').value = word.pos;
+                document.getElementById('formCategory').value = word.category;
+                document.getElementById('formGrammar').value = word.grammar || '';
+                document.getElementById('formExample').value = word.example || '';
+                document.getElementById('formExampleTr').value = word.exampleTr || '';
+                document.getElementById('formUsageRule').value = word.usageRule || '';
+
+                (word.synonyms || []).forEach(s => addSynonymFieldRow(s.word, s.nuance));
+            } else {
+                document.getElementById('wordModalTitle').textContent = 'Yeni Kelime / Terim Ekle';
+                document.getElementById('formWordId').value = '';
+                addSynonymFieldRow('', '');
+                addSynonymFieldRow('', '');
+            }
+
+            document.getElementById('wordModal').classList.remove('hidden');
+        }
+
+        function closeWordModal() {
+            document.getElementById('wordModal').classList.add('hidden');
+        }
+
+        function addSynonymFieldRow(wordVal = '', nuanceVal = '') {
+            const container = document.getElementById('formSynonymsContainer');
+            const row = document.createElement('div');
+            row.className = 'grid grid-cols-1 sm:grid-cols-3 gap-2 items-center syn-row';
+            row.innerHTML = `
+                <input type="text" placeholder="Muadil (Örn: Check)" value="${wordVal.replace(/"/g, '&quot;')}" class="syn-word-input sm:col-span-1 px-3 py-2 rounded-xl bg-white dark:bg-cockpit-900 border border-slate-200 dark:border-slate-700 text-xs font-mono font-bold outline-none focus:border-sky-500">
+                <div class="sm:col-span-2 flex items-center gap-1.5">
+                    <input type="text" placeholder="Hangi durumda kullanılır? (Örn: Rutin/hızlı seviye kontrolünde)" value="${nuanceVal.replace(/"/g, '&quot;')}" class="syn-nuance-input flex-1 px-3 py-2 rounded-xl bg-white dark:bg-cockpit-900 border border-slate-200 dark:border-slate-700 text-xs outline-none focus:border-sky-500">
+                    <button type="button" onclick="this.closest('.syn-row').remove()" class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-500 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-xmark text-xs"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(row);
+        }
+
+        function fillSampleWordTemplate() {
+            document.getElementById('formEn').value = 'Fatigue';
+            document.getElementById('formTr').value = 'Metal yorgunluğu (tekrarlı yük altında çatlama)';
+            document.getElementById('formPos').value = 'Noun (İsim)';
+            document.getElementById('formGrammar').value = 'metal fatigue / fatigue crack INITIATES at [stress point]';
+            document.getElementById('formExample').value = 'Pressurization cycles subject the aircraft fuselage to cyclic metal fatigue.';
+            document.getElementById('formExampleTr').value = 'Basınçlandırma döngüleri uçak gövdesini döngüsel metal yorgunluğuna maruz bırakır.';
+            document.getElementById('formUsageRule').value = 'Malzemenin kopma sınırının altındaki tekrarlı/döngüsel gerilmeler (cyclic stresses) sonucu çatlaması için kullanılır.';
+
+            const synContainer = document.getElementById('formSynonymsContainer');
+            synContainer.innerHTML = '';
+            addSynonymFieldRow('Fatigue', 'Tekrarlı (döngüsel) yük ve titreşimler sonucu oluşan mikro çatlak ve yorulma.');
+            addSynonymFieldRow('Creep (Sünme)', 'Özellikle türbin pallerinde yüksek sıcaklık ve sabit çekme yükü altında metalin zamanla kalıcı olarak uzaması.');
+            addSynonymFieldRow('Buckling (Burkulma)', 'İnce cidarlı panellerin veya dikmelerin aşırı basma (compression) yükü altında bükülüp çökmesi.');
+        }
+
+        function saveWordForm(e) {
+            e.preventDefault();
+            const existingId = document.getElementById('formWordId').value;
+            const en = document.getElementById('formEn').value.trim();
+            const tr = document.getElementById('formTr').value.trim();
+            const pos = document.getElementById('formPos').value;
+            const category = document.getElementById('formCategory').value;
+            const grammar = document.getElementById('formGrammar').value.trim();
+            const example = document.getElementById('formExample').value.trim();
+            const exampleTr = document.getElementById('formExampleTr').value.trim();
+            const usageRule = document.getElementById('formUsageRule').value.trim();
+
+            const synonyms = [];
+            document.querySelectorAll('.syn-row').forEach(row => {
+                const w = row.querySelector('.syn-word-input').value.trim();
+                const n = row.querySelector('.syn-nuance-input').value.trim();
+                if (w) synonyms.push({ word: w, nuance: n || 'Standart kullanım.' });
+            });
+
+            if (existingId) {
+                // Check if it's in customWords or if user edited an official word (if official, save a customized copy or update customWords)
+                const custIdx = appState.customWords.findIndex(w => w.id === existingId);
+                if (custIdx > -1) {
+                    appState.customWords[custIdx] = {
+                        ...appState.customWords[custIdx],
+                        en, tr, pos, category, grammar, example, exampleTr, usageRule, synonyms
+                    };
+                } else {
+                    const offIdx = INITIAL_OFFICIAL_WORDS.findIndex(w => w.id === existingId);
+                    if (offIdx > -1) {
+                        INITIAL_OFFICIAL_WORDS[offIdx] = {
+                            ...INITIAL_OFFICIAL_WORDS[offIdx],
+                            en, tr, pos, category, grammar, example, exampleTr, usageRule, synonyms
+                        };
+                    }
+                }
+                showToast(`"${en}" güncellendi!`, 'success');
+            } else {
+                const newWord = {
+                    id: 'cust_' + Date.now(),
+                    en,
+                    tr,
+                    pos,
+                    category,
+                    isCustom: true,
+                    grammar,
+                    example,
+                    exampleTr,
+                    usageRule,
+                    synonyms
+                };
+                appState.customWords.unshift(newWord);
+                showToast(`"${en}" kendi kelimelerine eklendi!`, 'success');
+            }
+
+            saveState();
+            closeWordModal();
+            applyGlobalFilter();
+            if (activeMainTab === 'mywords') renderMyWordsTab();
+            if (activeMainTab === 'nuance') renderNuanceDirectory();
+        }
+
+        function deleteCustomWord(wordId) {
+            appState.customWords = appState.customWords.filter(w => w.id !== wordId);
+            saveState();
+            applyGlobalFilter();
+            renderMyWordsTab();
+            showToast('Kelime listeden silindi.', 'info');
+        }
+
+        /********************************************************************
+         * 13. TAB 4: OFFICIAL WORD PACKS LIBRARY
+         ********************************************************************/
+        function renderOfficialLibraryTab() {
+            const packs = [
+                {
+                    name: 'EASA Part-66 & AMM',
+                    icon: 'fa-plane-up',
+                    color: 'sky',
+                    desc: 'Uçak Bakım Manueli (AMM), EASA Modülleri, yapısal hasar türleri ve ASD-STE100 teknik fiilleri.'
+                },
+                {
+                    name: 'Oxford 3000/5000',
+                    icon: 'fa-graduation-cap',
+                    color: 'indigo',
+                    desc: 'Genel ve akademik İngilizcede en sık karşılaşılan B2-C1 seviyesi anahtar kelimeler.'
+                },
+                {
+                    name: 'Akademik Bağlaçlar & Phrasal Verbs',
+                    icon: 'fa-link',
+                    color: 'emerald',
+                    desc: 'Teknik dokümanlarda ve sınavlarda cümleleri birbirine bağlayan resmi kalıplar ve edatlar.'
+                }
+            ];
+
+            const grid = document.getElementById('officialPacksGrid');
+            grid.innerHTML = packs.map(p => {
+                const packWords = INITIAL_OFFICIAL_WORDS.filter(w => w.category === p.name);
+                const learned = packWords.filter(w => getWordMastery(w.id) === 'easy').length;
+                const pct = packWords.length ? Math.round((learned / packWords.length) * 100) : 0;
+
+                return `
+                    <div class="bg-white dark:bg-cockpit-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 flex flex-col justify-between gap-4 shadow-sm">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="w-11 h-11 rounded-2xl bg-sky-500/15 text-sky-500 flex items-center justify-center text-lg">
+                                    <i class="fa-solid ${p.icon}"></i>
+                                </div>
+                                <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-cockpit-800">${packWords.length} Terim</span>
+                            </div>
+                            <h3 class="font-extrabold text-base text-slate-900 dark:text-white">${p.name}</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${p.desc}</p>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-[11px] font-bold mb-1">
+                                    <span class="text-slate-400">Hakimiyet Oranı</span>
+                                    <span class="text-emerald-500">%${pct} (${learned}/${packWords.length})</span>
+                                </div>
+                                <div class="w-full h-2 rounded-full bg-slate-100 dark:bg-cockpit-800 overflow-hidden">
+                                    <div class="h-full bg-emerald-500 transition-all" style="width: ${pct}%"></div>
+                                </div>
+                            </div>
+
+                            <button onclick="selectOfficialPackToStudy('${p.name}')" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs shadow transition">
+                                Bu Paketi Çalışmaya Başla <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            renderLibraryWords();
+        }
+
+        function renderLibraryWords() {
+            const q = (document.getElementById('librarySearchInput')?.value || '').toLowerCase().trim();
+            const listEl = document.getElementById('libraryWordsList');
+            if (!listEl) return;
+
+            const filtered = INITIAL_OFFICIAL_WORDS.filter(w =>
+                !q || w.en.toLowerCase().includes(q) || w.tr.toLowerCase().includes(q) || w.category.toLowerCase().includes(q)
+            );
+
+            listEl.innerHTML = filtered.map(w => {
+                const m = getWordMastery(w.id);
+                const badge = m === 'easy'
+                    ? '<span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-500">Öğrenildi</span>'
+                    : (m === 'hard' ? '<span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-rose-500/15 text-rose-500">Kritik</span>' : '<span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-cockpit-800 text-slate-400">Çalışılıyor</span>');
+
+                return `
+                    <div class="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div class="flex items-start sm:items-center gap-3">
+                            <button onclick="speakText('${w.en.replace(/'/g, "\\'")}')" class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-500 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
+                                <i class="fa-solid fa-volume-high text-xs"></i>
+                            </button>
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="font-mono font-extrabold text-sm text-slate-900 dark:text-white">${w.en}</span>
+                                    <span class="text-[11px] text-slate-400">(${w.pos})</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded bg-sky-500/10 text-sky-500 font-semibold">${w.category}</span>
+                                </div>
+                                <p class="text-xs text-slate-600 dark:text-slate-300">${w.tr}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 self-end sm:self-center">
+                            ${badge}
+                            <button onclick="openDeepInspectModal('${w.id}')" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-cockpit-800 hover:bg-sky-500 hover:text-white text-xs font-bold transition">
+                                Muadiller & Kural
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectOfficialPackToStudy(packName) {
+            document.getElementById('globalCategoryFilter').value = packName;
+            applyGlobalFilter();
+            switchMainTab('study');
+            showToast(`"${packName}" paketi seçildi!`, 'info');
+        }
+
+        /********************************************************************
+         * 14. SYNC / BACKUP & RESTORE (KODER iOS <-> VS CODE PC)
+         ********************************************************************/
+        function openSyncModal() {
+            const exportPayload = JSON.stringify(appState, null, 2);
+            document.getElementById('syncJsonTextarea').value = exportPayload;
+            document.getElementById('syncModal').classList.remove('hidden');
+        }
+
+        function closeSyncModal() {
+            document.getElementById('syncModal').classList.add('hidden');
+        }
+
+        function exportDataToClipboard() {
+            const textarea = document.getElementById('syncJsonTextarea');
+            textarea.select();
+            document.execCommand('copy');
+            showToast('Yedek verisi panoya kopyalandı! Diğer cihazına yapıştırabilirsin.', 'success');
+        }
+
+        function downloadBackupJson() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `aerolexis_yedek_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+            showToast('Yedek JSON dosyası indirildi.', 'success');
+        }
+
+        function importDataFromTextarea() {
+            try {
+                const raw = document.getElementById('syncJsonTextarea').value.trim();
+                const parsed = JSON.parse(raw);
+                if (!parsed || typeof parsed !== 'object') throw new Error('Geçersiz format');
+
+                appState.customWords = Array.isArray(parsed.customWords) ? parsed.customWords : appState.customWords;
+                appState.customLists = Array.isArray(parsed.customLists) ? parsed.customLists : appState.customLists;
+                appState.masteryMap = parsed.masteryMap || {};
+                appState.wrongCounts = parsed.wrongCounts || {};
+                appState.streak = parsed.streak || 1;
+
+                saveState();
+                populateFilterDropdowns();
+                applyGlobalFilter();
+                closeSyncModal();
+                showToast('Veriler başarıyla yüklendi ve senkronize edildi!', 'success');
+            } catch (e) {
+                showToast('Hatalı JSON kodu! Lütfen kopyaladığınız metni kontrol edin.', 'error');
+            }
+        }
+
+        function resetAllProgressConfirm() {
+            localStorage.removeItem(STORAGE_KEY);
+            loadState();
+            populateFilterDropdowns();
+            applyGlobalFilter();
+            closeSyncModal();
+            showToast('Uygulama başlangıç verilerine sıfırlandı.', 'warning');
+        }
+
+        function openGuideModal() {
+            document.getElementById('guideModal').classList.remove('hidden');
+        }
+
+        function closeGuideModal() {
+            document.getElementById('guideModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
